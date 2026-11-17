@@ -1,0 +1,12 @@
+-- SKEMA SUPABASE E-RAPOR SD (SUDAH TERPASANG)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE TABLE IF NOT EXISTS public.sekolah_config (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), nama_sekolah TEXT, npsn TEXT, nss TEXT, alamat TEXT, kelurahan TEXT, kecamatan TEXT, kabupaten TEXT, provinsi TEXT, website TEXT, email TEXT, kepala_sekolah TEXT, nip_kepsek TEXT, tahun_ajaran TEXT, semester_aktif TEXT, tanggal_rapor TEXT);
+CREATE TABLE IF NOT EXISTS public.kelas (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), nama_kelas TEXT, tingkat INT, fase TEXT, wali_kelas_id UUID);
+CREATE TABLE IF NOT EXISTS public.guru_users (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT UNIQUE, password TEXT, nama_lengkap TEXT, nip TEXT, role TEXT, wali_kelas_id UUID);
+CREATE TABLE IF NOT EXISTS public.mapel (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), kode_mapel TEXT, nama_mapel TEXT, kelompok TEXT, urutan INT);
+CREATE TABLE IF NOT EXISTS public.siswa (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), nis TEXT, nisn TEXT, nama_siswa TEXT, jk TEXT, tempat_lahir TEXT, tanggal_lahir TEXT, agama TEXT, kelas_id UUID, alamat_siswa TEXT);
+CREATE TABLE IF NOT EXISTS public.tujuan_pembelajaran (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), mapel_id UUID, tingkat INT, semester TEXT, deskripsi_tp TEXT, status TEXT);
+CREATE TABLE IF NOT EXISTS public.nilai_rapor (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, mapel_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, nilai_akhir INT, tp_optimal_ids JSONB, tp_peningkatan_ids JSONB, deskripsi_tertinggi TEXT, deskripsi_terendah TEXT);
+CREATE TABLE IF NOT EXISTS public.nilai_karakter_p3 (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, dimensi TEXT, elemen_capaian JSONB, deskripsi_karakter TEXT);
+CREATE TABLE IF NOT EXISTS public.nilai_ekskul (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, nama_ekskul TEXT, predikat TEXT, deskripsi TEXT);
+CREATE TABLE IF NOT EXISTS public.data_wali_kelas (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, sakit INT, izin INT, tanpa_keterangan INT, catatan_walas TEXT, status_kenaikan TEXT);
