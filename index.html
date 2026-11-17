@@ -7,7 +7,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- PWA Manifest -->
+  <!-- PWA Manifest & Favicon -->
+  <link rel="icon" type="image/svg+xml" href="./logo.svg">
   <link rel="manifest" href="./manifest.json">
 
   <!-- Google Fonts: Plus Jakarta Sans -->
@@ -19,8 +20,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest" crossorigin="anonymous"></script>
-  <!-- JSZip untuk Generate File ZIP Langsung di Browser -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
   <!-- SheetJS (XLSX) untuk Baca & Buat File Excel (.xlsx) yang Rapi -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 
@@ -453,15 +452,20 @@
         .replace(/"/g, '&quot;');
     }
 
-    // SVG Lambang Tut Wuri Handayani Resmi Sederhana
+    // SVG Logo Aplikasi e-Rapor SD (Buku Rapor & Lencana Capaian)
     function getTutWuriSVG(sizeClass = 'w-11 h-11') {
       return `
-        <svg viewBox="0 0 100 100" class="${sizeClass} shrink-0 drop-shadow">
-          <polygon points="50,4 93,28 93,72 50,96 7,72 7,28" fill="#0B4F9F" stroke="#FFFFFF" stroke-width="4"/>
-          <circle cx="50" cy="50" r="32" fill="#FFFFFF" opacity="0.15"/>
-          <path d="M50 22 L57 38 L74 38 L60 49 L65 65 L50 55 L35 65 L40 49 L26 38 L43 38 Z" fill="#FACC15"/>
-          <path d="M24 62 Q50 82 76 62" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="50" cy="48" r="7" fill="#0B4F9F"/>
+        <svg viewBox="0 0 120 120" class="${sizeClass} shrink-0 drop-shadow">
+          <rect x="8" y="8" width="104" height="104" rx="26" fill="#0B4F9F" stroke="#FFFFFF" stroke-width="5"/>
+          <path d="M26 38 C26 34 30 32 34 33 L58 38 L58 84 L32 78 C28 77 26 74 26 70 Z" fill="#FFFFFF" opacity="0.96"/>
+          <path d="M94 38 C94 34 90 32 86 33 L62 38 L62 84 L88 78 C92 77 94 74 94 70 Z" fill="#E0F2FE"/>
+          <line x1="34" y1="47" x2="52" y2="50" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="34" y1="57" x2="52" y2="60" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="34" y1="67" x2="48" y2="69" stroke="#60A5FA" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="68" y1="50" x2="86" y2="47" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="68" y1="60" x2="86" y2="57" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="84" cy="78" r="18" fill="#FACC15" stroke="#FFFFFF" stroke-width="3.5"/>
+          <path d="M76 78 L81.5 83.5 L92 72.5" fill="none" stroke="#0B4F9F" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       `;
     }
@@ -498,110 +502,6 @@
           </div>
         </div>
       `;
-    }
-
-    // =========================================================================
-    // GENERATOR & DOWNLOAD PAKET ZIP LENGKAP (HTML + JSON + SW + SQL)
-    // =========================================================================
-    async function downloadCompleteZipBundle() {
-      if (!window.JSZip) {
-        showToast('Library ZIP sedang dimuat, coba sesaat lagi.', 'error');
-        return;
-      }
-      showToast('Menyiapkan paket file ZIP lengkap...', 'info');
-      try {
-        const zip = new window.JSZip();
-        const clonedRoot = document.documentElement.cloneNode(true);
-        clonedRoot.querySelectorAll('[data-bard-client-injected], [ws-interception-config], #erapor-toast, #erapor-modal-overlay, #dynamic-print-page-style').forEach(el => el.remove());
-        clonedRoot.querySelectorAll('style').forEach(st => {
-          if (st.textContent && st.textContent.includes('--tw-border-spacing-x')) st.remove();
-        });
-        const appRootClone = clonedRoot.querySelector('#erapor-app-root');
-        if (appRootClone) appRootClone.innerHTML = '';
-        const printClone = clonedRoot.querySelector('#print-preview-area');
-        if (printClone) {
-          printClone.className = 'hidden';
-          printClone.innerHTML = '';
-        }
-        const fullHtml = '<!DOCTYPE html>\n' + clonedRoot.outerHTML;
-
-        const manifestObj = {
-          name: "e-Rapor SD - Kementerian Pendidikan Dasar dan Menengah",
-          short_name: "e-Rapor SD",
-          start_url: "./index.html",
-          display: "standalone",
-          background_color: "#F3F6FA",
-          theme_color: "#0D52BD",
-          description: "Aplikasi Pengolahan Nilai Rapor Sekolah Dasar (SD)",
-          icons: [
-            { src: "https://placehold.co/192x192/0D52BD/FFFFFF?text=e-Rapor+SD", sizes: "192x192", type: "image/png" },
-            { src: "https://placehold.co/512x512/0D52BD/FFFFFF?text=e-Rapor+SD", sizes: "512x512", type: "image/png" }
-          ]
-        };
-
-        const swFileContent = `const CACHE_NAME = 'erapor-sd-cache-v1';
-self.addEventListener('install', (event) => { self.skipWaiting(); });
-self.addEventListener('activate', (event) => { event.waitUntil(clients.claim()); });
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
-});`;
-
-        const configJson = {
-          project_name: "e-Rapor SD",
-          is_preview: IS_PREVIEW,
-          supabase_url: SUPABASE_URL,
-          supabase_publishable_key: SUPABASE_ANON_KEY,
-          exported_at: new Date().toISOString()
-        };
-
-        const sqlSchema = `-- SKEMA SUPABASE E-RAPOR SD (SUDAH TERPASANG)
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE TABLE IF NOT EXISTS public.sekolah_config (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), nama_sekolah TEXT, npsn TEXT, nss TEXT, alamat TEXT, kelurahan TEXT, kecamatan TEXT, kabupaten TEXT, provinsi TEXT, website TEXT, email TEXT, kepala_sekolah TEXT, nip_kepsek TEXT, tahun_ajaran TEXT, semester_aktif TEXT, tanggal_rapor TEXT);
-CREATE TABLE IF NOT EXISTS public.kelas (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), nama_kelas TEXT, tingkat INT, fase TEXT, wali_kelas_id UUID);
-CREATE TABLE IF NOT EXISTS public.guru_users (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), username TEXT UNIQUE, password TEXT, nama_lengkap TEXT, nip TEXT, role TEXT, wali_kelas_id UUID);
-CREATE TABLE IF NOT EXISTS public.mapel (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), kode_mapel TEXT, nama_mapel TEXT, kelompok TEXT, urutan INT);
-CREATE TABLE IF NOT EXISTS public.siswa (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), nis TEXT, nisn TEXT, nama_siswa TEXT, jk TEXT, tempat_lahir TEXT, tanggal_lahir TEXT, agama TEXT, kelas_id UUID, alamat_siswa TEXT);
-CREATE TABLE IF NOT EXISTS public.tujuan_pembelajaran (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), mapel_id UUID, tingkat INT, semester TEXT, deskripsi_tp TEXT, status TEXT);
-CREATE TABLE IF NOT EXISTS public.nilai_rapor (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, mapel_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, nilai_akhir INT, tp_optimal_ids JSONB, tp_peningkatan_ids JSONB, deskripsi_tertinggi TEXT, deskripsi_terendah TEXT);
-CREATE TABLE IF NOT EXISTS public.nilai_karakter_p3 (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, dimensi TEXT, elemen_capaian JSONB, deskripsi_karakter TEXT);
-CREATE TABLE IF NOT EXISTS public.nilai_ekskul (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, nama_ekskul TEXT, predikat TEXT, deskripsi TEXT);
-CREATE TABLE IF NOT EXISTS public.data_wali_kelas (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), siswa_id UUID, kelas_id UUID, semester TEXT, tahun_ajaran TEXT, sakit INT, izin INT, tanpa_keterangan INT, catatan_walas TEXT, status_kenaikan TEXT);`;
-
-        const readmeText = `PAKET APLIKASI E-RAPOR SD (TERHUBUNG KE SUPABASE)
-===================================================
-URL Supabase : ${SUPABASE_URL}
-Status       : Produksi Aktif (IS_PREVIEW = false)
-
-Daftar File dalam ZIP ini:
-1. index.html               -> File utama aplikasi siap hosting (Vercel/Netlify/cPanel).
-2. e-rapor-sd-blogger.html  -> Kode 1-file siap tempel langsung ke Widget HTML/JS Blogger.
-3. manifest.json            -> File konfigurasi Progressive Web App (PWA).
-4. sw.js                    -> Service Worker PWA.
-5. supabase-config.json     -> Konfigurasi kredensial Supabase Anda.
-6. schema-supabase.sql      -> Backup struktur tabel PostgreSQL.`;
-
-        zip.file('index.html', fullHtml);
-        zip.file('e-rapor-sd-blogger.html', fullHtml);
-        zip.file('manifest.json', JSON.stringify(manifestObj, null, 2));
-        zip.file('sw.js', swFileContent);
-        zip.file('supabase-config.json', JSON.stringify(configJson, null, 2));
-        zip.file('schema-supabase.sql', sqlSchema);
-        zip.file('README.txt', readmeText);
-
-        const blob = await zip.generateAsync({ type: 'blob' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'e-Rapor-SD-Lengkap-Supabase.zip';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        showToast('File ZIP lengkap berhasil diunduh!', 'success');
-      } catch (err) {
-        showToast('Gagal membuat file ZIP: ' + err.message, 'error');
-      }
     }
 
     // =========================================================================
@@ -735,15 +635,6 @@ Daftar File dalam ZIP ini:
                   <span>Daftar & Simpan Akun Guru</span>
                 </button>
               </form>
-
-              <!-- Tombol Download Paket ZIP Lengkap -->
-              <div class="mt-4 pt-3.5 border-t border-slate-200">
-                <button type="button" id="btn-download-zip-login"
-                  class="w-full py-2.5 px-3 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center justify-center gap-2">
-                  <i data-lucide="folder-archive" class="w-4 h-4 text-amber-400"></i>
-                  <span>Download Paket ZIP Lengkap (HTML + JSON + SW + SQL)</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -807,8 +698,6 @@ Daftar File dalam ZIP ini:
         const p = document.getElementById('login-password');
         p.type = p.type === 'password' ? 'text' : 'password';
       };
-
-      document.getElementById('btn-download-zip-login').onclick = downloadCompleteZipBundle;
 
       // Proses Pendaftaran Guru Baru
       registerForm.onsubmit = async (e) => {
@@ -3594,10 +3483,6 @@ Daftar File dalam ZIP ini:
               </div>
             </div>
             <div class="flex flex-wrap gap-2">
-              <button type="button" id="btn-download-zip-settings" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
-                <i data-lucide="folder-archive" class="w-4 h-4 text-amber-400"></i>
-                <span>Download Paket ZIP Lengkap</span>
-              </button>
               <button type="button" id="btn-ganti-password-self" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
                 <i data-lucide="key" class="w-4 h-4"></i>
                 <span>Ganti Password Akun</span>
@@ -3775,8 +3660,6 @@ Daftar File dalam ZIP ini:
           </div>
         </div>
       `;
-
-      document.getElementById('btn-download-zip-settings').onclick = downloadCompleteZipBundle;
 
       document.getElementById('form-identitas-sekolah').onsubmit = async (e) => {
         e.preventDefault();

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="erapor-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B4F9F"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="erapor-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <!-- Perisai / Badge Aplikasi -->
+  <rect x="8" y="8" width="104" height="104" rx="26" fill="url(#erapor-bg)" stroke="#FFFFFF" stroke-width="5"/>
+  <!-- Buku Rapor Terbuka -->
+  <path d="M26 38 C26 34 30 32 34 33 L58 38 L58 84 L32 78 C28 77 26 74 26 70 Z" fill="#FFFFFF" opacity="0.96"/>
+  <path d="M94 38 C94 34 90 32 86 33 L62 38 L62 84 L88 78 C92 77 94 74 94 70 Z" fill="#E0F2FE"/>
+  <!-- Garis Nilai pada Buku Rapor -->
+  <line x1="34" y1="47" x2="52" y2="50" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="34" y1="57" x2="52" y2="60" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="34" y1="67" x2="48" y2="69" stroke="#60A5FA" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="68" y1="50" x2="86" y2="47" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="68" y1="60" x2="86" y2="57" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Lencana Bintang Prestasi & Centang -->
+  <circle cx="84" cy="78" r="18" fill="url(#erapor-gold)" stroke="#FFFFFF" stroke-width="3.5"/>
+  <path d="M76 78 L81.5 83.5 L92 72.5" fill="none" stroke="#0B4F9F" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
