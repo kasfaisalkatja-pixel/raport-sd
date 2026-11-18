@@ -338,6 +338,7 @@
       },
 
       waliKelasOverride: JSON.parse(localStorage.getItem('erapor_sd_wali_override') || '{}'),
+      nilaiKeterampilanMap: JSON.parse(localStorage.getItem('erapor_sd_nilai_keterampilan') || '{}'),
 
       kelasList: [],
       guruList: [],
@@ -2261,7 +2262,8 @@
                 <tr class="bg-red-700 text-white">
                   <th class="py-3 px-3 font-bold w-10">No</th>
                   <th class="py-3 px-3 font-bold min-w-[160px]">Nama Siswa</th>
-                  <th class="py-3 px-3 font-bold w-24 text-center">Nilai</th>
+                  <th class="py-3 px-3 font-bold w-24 text-center">Nilai Pengetahuan</th>
+                  <th class="py-3 px-3 font-bold w-24 text-center">Nilai Keterampilan</th>
                   ${state.nilaiEditMode === 'tp' ? `
                     <th class="py-3 px-3 font-bold min-w-[240px]">TP yang Diukur & Tercapai Optimal</th>
                     <th class="py-3 px-3 font-bold min-w-[240px]">TP yang Diukur & Perlu Peningkatan</th>
@@ -2273,11 +2275,13 @@
               </thead>
               <tbody class="divide-y divide-slate-200">
                 ${siswaKelas.length === 0 ? `
-                  <tr><td colspan="5" class="py-8 text-center text-slate-400">Belum ada siswa pada kelas ini.</td></tr>
+                  <tr><td colspan="6" class="py-8 text-center text-slate-400">Belum ada siswa pada kelas ini.</td></tr>
                 ` : siswaKelas.map((s, idx) => {
                   const existing = state.nilaiRaporList.find(n => n.siswa_id === s.id && n.mapel_id === mapelId && String(n.semester) === String(state.selectedSemester)) || {
                     nilai_akhir: '', tp_optimal_ids: [], tp_peningkatan_ids: [], deskripsi_tertinggi: '', deskripsi_terendah: ''
                   };
+                  const ketKey = `${s.id}_${mapelId}_${state.selectedSemester}`;
+                  const nilaiKetVal = state.nilaiKeterampilanMap?.[ketKey] ?? existing.nilai_keterampilan ?? '';
                   const optIds = Array.isArray(existing.tp_optimal_ids) ? existing.tp_optimal_ids : [];
                   const penIds = Array.isArray(existing.tp_peningkatan_ids) ? existing.tp_peningkatan_ids : [];
 
@@ -2290,7 +2294,11 @@
                       </td>
                       <td class="py-3 px-3 text-center">
                         <input type="number" min="0" max="100" value="${existing.nilai_akhir}" placeholder="0-100"
-                          class="inp-nilai-akhir w-20 text-center font-extrabold text-sm border border-slate-300 rounded-xl py-2 focus:ring-2 focus:ring-blue-500 outline-none" />
+                          class="inp-nilai-akhir w-20 text-center font-extrabold text-sm border border-slate-300 rounded-xl py-2 focus:ring-2 focus:ring-red-500 outline-none" />
+                      </td>
+                      <td class="py-3 px-3 text-center">
+                        <input type="number" min="0" max="100" value="${nilaiKetVal}" placeholder="0-100"
+                          class="inp-nilai-keterampilan w-20 text-center font-extrabold text-sm border border-slate-300 rounded-xl py-2 focus:ring-2 focus:ring-emerald-500 outline-none" />
                       </td>
                       ${state.nilaiEditMode === 'tp' ? `
                         <td class="py-3 px-3 space-y-1.5">
@@ -2354,9 +2362,15 @@
             for (const row of rows) {
               const siswaId = row.getAttribute('data-siswa-nilai-row');
               const nilaiVal = row.querySelector('.inp-nilai-akhir').value;
+              const nilaiKetRaw = row.querySelector('.inp-nilai-keterampilan')?.value ?? '';
+              const ketKey = `${siswaId}_${mapelId}_${state.selectedSemester}`;
+              if (nilaiKetRaw !== '') {
+                state.nilaiKeterampilanMap = { ...(state.nilaiKeterampilanMap || {}), [ketKey]: Math.min(100, Math.max(0, Number(nilaiKetRaw))) };
+              }
               if (nilaiVal === '') continue;
 
               const nilaiNum = Math.min(100, Math.max(0, Number(nilaiVal)));
+              const nilaiKetNum = nilaiKetRaw !== '' ? Math.min(100, Math.max(0, Number(nilaiKetRaw))) : nilaiNum;
               const existingIdx = state.nilaiRaporList.findIndex(n => n.siswa_id === siswaId && n.mapel_id === mapelId && String(n.semester) === String(state.selectedSemester) && tahunMatch(n));
               const prev = existingIdx >= 0 ? state.nilaiRaporList[existingIdx] : {};
 
@@ -2397,8 +2411,8 @@
               };
 
               if (IS_PREVIEW) {
-                if (existingIdx >= 0) state.nilaiRaporList[existingIdx] = { ...prev, ...payload };
-                else state.nilaiRaporList.push({ id: 'nr-' + Date.now() + Math.random(), ...payload });
+                if (existingIdx >= 0) state.nilaiRaporList[existingIdx] = { ...prev, ...payload, nilai_keterampilan: nilaiKetNum };
+                else state.nilaiRaporList.push({ id: 'nr-' + Date.now() + Math.random(), ...payload, nilai_keterampilan: nilaiKetNum });
               } else {
                 if (existingIdx >= 0) {
                   sbCheck(await supabase.from('nilai_rapor').update(payload).eq('id', prev.id));
@@ -2407,6 +2421,7 @@
                 }
               }
             }
+            localStorage.setItem('erapor_sd_nilai_keterampilan', JSON.stringify(state.nilaiKeterampilanMap || {}));
             if (!IS_PREVIEW) await syncAllDataFromSupabase();
             showToast('Nilai rapor & deskripsi capaian kompetensi berhasil disimpan!', 'success');
             renderInputNilaiPage(container);
@@ -3511,8 +3526,10 @@
 
         const renderMapelRows = (list) => list.map((m, i) => {
           const nr = state.nilaiRaporList.find(n => n.siswa_id === s.id && n.mapel_id === m.id && String(n.semester) === String(state.selectedSemester));
+          const ketKey = `${s.id}_${m.id}_${state.selectedSemester}`;
+          const savedKet = state.nilaiKeterampilanMap?.[ketKey];
           const nPeng = typeof nr?.nilai_pengetahuan === 'number' ? nr.nilai_pengetahuan : (typeof nr?.nilai_akhir === 'number' ? nr.nilai_akhir : null);
-          const nKet = typeof nr?.nilai_keterampilan === 'number' ? nr.nilai_keterampilan : (typeof nr?.nilai_akhir === 'number' ? nr.nilai_akhir : null);
+          const nKet = typeof savedKet === 'number' ? savedKet : (typeof nr?.nilai_keterampilan === 'number' ? nr.nilai_keterampilan : (typeof nr?.nilai_akhir === 'number' ? nr.nilai_akhir : null));
           if (nPeng !== null) { sumPengetahuan += nPeng; cntPengetahuan++; }
           if (nKet !== null) { sumKeterampilan += nKet; cntKeterampilan++; }
 
