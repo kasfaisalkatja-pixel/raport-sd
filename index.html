@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>e-Rapor SD | Kementerian Pendidikan Dasar dan Menengah</title>
-  <meta name="theme-color" content="#0D52BD">
+  <meta name="theme-color" content="#B91C1C">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -59,8 +59,8 @@
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.04); }
-    ::-webkit-scrollbar-thumb { background: rgba(13, 82, 189, 0.25); border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(13, 82, 189, 0.45); }
+    ::-webkit-scrollbar-thumb { background: rgba(185, 28, 28, 0.25); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(185, 28, 28, 0.45); }
 
     /* Glassmorphism Utilities */
     .glass-nav-active {
@@ -132,7 +132,7 @@
     }
     .bento-hover:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 24px -6px rgba(13, 82, 189, 0.22);
+      box-shadow: 0 10px 24px -6px rgba(185, 28, 28, 0.22);
     }
 
     /* Styles Dokumen Siap Cetak Rapor */
@@ -169,13 +169,21 @@
     }
     .rapor-table {
       width: 100%;
-      border-collapse: collapse !important;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+      border-top: 1px solid #000000 !important;
+      border-left: 1px solid #000000 !important;
+      border-right: none !important;
+      border-bottom: none !important;
       font-size: 9pt;
       margin-bottom: 12px;
     }
     .rapor-table th,
     .rapor-table td {
-      border: 1px solid #000000 !important;
+      border-top: none !important;
+      border-left: none !important;
+      border-right: 1px solid #000000 !important;
+      border-bottom: 1px solid #000000 !important;
       padding: 5px 7px;
       vertical-align: top;
     }
@@ -328,6 +336,8 @@
         semester_aktif: '1',
         tanggal_rapor: '20 Desember 2026'
       },
+
+      waliKelasOverride: JSON.parse(localStorage.getItem('erapor_sd_wali_override') || '{}'),
 
       kelasList: [],
       guruList: [],
@@ -489,7 +499,7 @@
       const colors = {
         success: 'bg-emerald-600 text-white border-emerald-400',
         error: 'bg-rose-600 text-white border-rose-400',
-        info: 'bg-blue-700 text-white border-blue-400'
+        info: 'bg-red-700 text-white border-blue-400'
       };
 
       const toast = document.createElement('div');
@@ -514,7 +524,7 @@
       overlay.className = 'fixed inset-0 z-[9999995] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 overflow-y-auto';
       overlay.innerHTML = `
         <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full ${maxWidthClass} overflow-hidden my-auto animate-fadeIn">
-          <div class="bg-gradient-to-r from-blue-900 via-blue-700 to-sky-600 px-5 py-3.5 flex items-center justify-between text-white">
+          <div class="bg-gradient-to-r from-red-900 via-red-700 to-rose-600 px-5 py-3.5 flex items-center justify-between text-white">
             <h3 class="font-bold text-sm sm:text-base">${esc(title)}</h3>
             <button type="button" id="close-modal-btn" class="p-1 rounded-lg hover:bg-white/20 transition">
               <i data-lucide="x" class="w-5 h-5"></i>
@@ -573,11 +583,11 @@
           <rect x="8" y="8" width="104" height="104" rx="26" fill="#0B4F9F" stroke="#FFFFFF" stroke-width="5"/>
           <path d="M26 38 C26 34 30 32 34 33 L58 38 L58 84 L32 78 C28 77 26 74 26 70 Z" fill="#FFFFFF" opacity="0.96"/>
           <path d="M94 38 C94 34 90 32 86 33 L62 38 L62 84 L88 78 C92 77 94 74 94 70 Z" fill="#E0F2FE"/>
-          <line x1="34" y1="47" x2="52" y2="50" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="34" y1="57" x2="52" y2="60" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="34" y1="47" x2="52" y2="50" stroke="#B91C1C" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="34" y1="57" x2="52" y2="60" stroke="#B91C1C" stroke-width="3.5" stroke-linecap="round"/>
           <line x1="34" y1="67" x2="48" y2="69" stroke="#60A5FA" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="68" y1="50" x2="86" y2="47" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="68" y1="60" x2="86" y2="57" stroke="#0D52BD" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="68" y1="50" x2="86" y2="47" stroke="#B91C1C" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="68" y1="60" x2="86" y2="57" stroke="#B91C1C" stroke-width="3.5" stroke-linecap="round"/>
           <circle cx="84" cy="78" r="18" fill="#FACC15" stroke="#FFFFFF" stroke-width="3.5"/>
           <path d="M76 78 L81.5 83.5 L92 72.5" fill="none" stroke="#0B4F9F" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -610,7 +620,7 @@
               <circle cx="106" cy="57" r="1.5" fill="#0F172A"/><circle cx="114" cy="57" r="1.5" fill="#0F172A"/>
               <path d="M107 62 Q110 65 113 62" stroke="#0F172A" stroke-width="1.5" fill="none"/>
             </svg>
-            <div class="inline-block bg-blue-900/90 text-white text-[10px] font-extrabold px-3 py-1 rounded-full shadow-md border border-sky-300/50 -mt-2 relative z-10">
+            <div class="inline-block bg-blue-900/90 text-white text-[10px] font-extrabold px-3 py-1 rounded-full shadow-md border border-rose-300/50 -mt-2 relative z-10">
               e-Rapor SD<br/><span class="text-amber-300 font-semibold">Maju Bersama</span>
             </div>
           </div>
@@ -630,10 +640,10 @@
 
           <div class="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/60 overflow-hidden z-10 my-auto">
             <!-- Header Login -->
-            <div class="bg-gradient-to-r from-blue-900 via-blue-700 to-sky-600 p-5 text-white text-center relative">
+            <div class="bg-gradient-to-r from-red-900 via-red-700 to-rose-600 p-5 text-white text-center relative">
               <div class="flex justify-center mb-2.5">${getTutWuriSVG('w-12 h-12')}</div>
               <h1 class="text-xl font-extrabold tracking-tight">e-Rapor SD</h1>
-              <p class="text-xs text-sky-100 mt-0.5">Kementerian Pendidikan Dasar dan Menengah</p>
+              <p class="text-xs text-rose-100 mt-0.5">Kementerian Pendidikan Dasar dan Menengah</p>
               <div class="mt-2.5 inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-semibold border border-white/25">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>Sinkronisasi Akun Multi-Device Aktif</span>
@@ -643,7 +653,7 @@
             <div class="p-5 sm:p-6">
               <!-- Tab Mode: Masuk Guru | Daftar Guru | Admin -->
               <div class="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-xl mb-5">
-                <button type="button" id="tab-mode-guru-login" class="py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold bg-blue-600 text-white shadow-sm transition">
+                <button type="button" id="tab-mode-guru-login" class="py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold bg-red-700 text-white shadow-sm transition">
                   Masuk Guru
                 </button>
                 <button type="button" id="tab-mode-guru-daftar" class="py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition">
@@ -677,7 +687,7 @@
                     </span>
                     <input type="password" id="login-password" required placeholder="••••••••"
                       class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
-                    <button type="button" id="toggle-pass-btn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-blue-600">
+                    <button type="button" id="toggle-pass-btn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-red-600">
                       <i data-lucide="eye" class="w-4 h-4"></i>
                     </button>
                   </div>
@@ -703,13 +713,13 @@
                 </button>
 
                 <p id="hint-daftar-guru" class="text-center text-xs text-slate-500 pt-1">
-                  Belum punya akun guru? <button type="button" id="link-to-daftar-guru" class="text-blue-700 font-extrabold hover:underline">Daftar Akun Guru di sini</button>
+                  Belum punya akun guru? <button type="button" id="link-to-daftar-guru" class="text-red-700 font-extrabold hover:underline">Daftar Akun Guru di sini</button>
                 </p>
               </form>
 
               <!-- PANEL 2: FORM PENDAFTARAN AKUN GURU / WALI KELAS -->
               <form id="register-guru-form" class="space-y-3 hidden">
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5 text-[11px] text-blue-900">
+                <div class="bg-red-50 border border-red-200 rounded-xl p-2.5 text-[11px] text-blue-900">
                   Daftarkan akun Anda sekali saja, lalu gunakan <strong>Nama Lengkap / NIP</strong> dan <strong>Password</strong> untuk masuk dari HP atau Laptop mana pun.
                 </div>
 
@@ -766,7 +776,7 @@
       const userInput = document.getElementById('login-username');
       const hintDaftar = document.getElementById('hint-daftar-guru');
 
-      const activeTabCls = 'py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold bg-blue-600 text-white shadow-sm transition';
+      const activeTabCls = 'py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold bg-red-700 text-white shadow-sm transition';
       const inactiveTabCls = 'py-2 px-2 rounded-lg text-[11px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 transition';
 
       const switchToGuruLogin = () => {
@@ -1067,7 +1077,7 @@
 
       root.innerHTML = `
         <!-- TOP HEADER BAR -->
-        <header class="bg-gradient-to-r from-blue-900 via-blue-700 to-sky-600 animate-gradient-flow text-white px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-md shrink-0 z-30">
+        <header class="bg-gradient-to-r from-red-900 via-red-700 to-rose-600 animate-gradient-flow text-white px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-md shrink-0 z-30">
           <div class="flex items-center gap-3">
             <div class="animate-float">${getTutWuriSVG('w-10 h-10 sm:w-11 sm:h-11')}</div>
             <div>
@@ -1077,7 +1087,7 @@
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Cloud Sync
                 </span>
               </div>
-              <p class="text-[11px] sm:text-xs text-sky-100 font-medium mt-0.5">Kementerian Pendidikan Dasar dan Menengah</p>
+              <p class="text-[11px] sm:text-xs text-rose-100 font-medium mt-0.5">Kementerian Pendidikan Dasar dan Menengah</p>
             </div>
           </div>
 
@@ -1088,7 +1098,7 @@
             </div>
             <div>
               <div class="font-extrabold text-sm tracking-wide uppercase leading-tight">${esc(sek.nama_sekolah)}</div>
-              <div class="text-[11px] text-sky-100">${esc(sek.kabupaten)} - ${esc(sek.provinsi)}</div>
+              <div class="text-[11px] text-rose-100">${esc(sek.kabupaten)} - ${esc(sek.provinsi)}</div>
             </div>
           </div>
 
@@ -1105,12 +1115,12 @@
             </button>
 
             <button type="button" id="header-profile-btn" class="flex items-center gap-2.5 text-left hover:bg-white/10 px-2 py-1.5 rounded-xl transition">
-              <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-blue-800 flex items-center justify-center font-extrabold text-xs sm:text-sm shadow-sm shrink-0">
+              <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white text-red-800 flex items-center justify-center font-extrabold text-xs sm:text-sm shadow-sm shrink-0">
                 ${esc(u.nama.charAt(0).toUpperCase())}
               </div>
               <div class="hidden sm:block">
                 <div class="text-xs font-bold leading-tight">${esc(u.nama)}</div>
-                <div class="text-[10px] text-sky-100">${esc(u.jabatan)}</div>
+                <div class="text-[10px] text-rose-100">${esc(u.jabatan)}</div>
               </div>
             </button>
 
@@ -1122,7 +1132,7 @@
         </header>
 
         <!-- RUNNING INFO MARQUEE BAR -->
-        <div class="marquee-wrapper bg-gradient-to-r from-sky-950 via-blue-950 to-indigo-950 text-sky-100 text-[11px] font-medium py-1.5 px-4 overflow-hidden border-b border-blue-800/60 shrink-0 flex items-center gap-3 z-20">
+        <div class="marquee-wrapper bg-gradient-to-r from-rose-950 via-red-950 to-red-900 text-rose-100 text-[11px] font-medium py-1.5 px-4 overflow-hidden border-b border-red-800/60 shrink-0 flex items-center gap-3 z-20">
           <span class="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-extrabold px-2 py-0.5 rounded-full text-[10px] shrink-0 shadow-sm">
             <span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-ping"></span>
             INFO
@@ -1141,7 +1151,7 @@
         <!-- BODY WRAPPER -->
         <div class="flex flex-1 overflow-hidden relative">
           <!-- DESKTOP SIDEBAR -->
-          <aside class="desktop-sidebar w-64 bg-gradient-to-b from-blue-700 via-blue-600 to-sky-500 text-white flex-col justify-between p-3 overflow-y-auto shrink-0 shadow-xl z-20">
+          <aside class="desktop-sidebar w-64 bg-gradient-to-b from-red-800 via-red-700 to-rose-600 text-white flex-col justify-between p-3 overflow-y-auto shrink-0 shadow-xl z-20">
             <nav class="space-y-1">
               ${menuItems.map(item => {
                 if (item.isGroup) {
@@ -1156,7 +1166,7 @@
                       </button>
                       <div class="${state.nilaiSubOpen ? 'block' : 'hidden'} mt-1 ml-3 pl-2.5 border-l border-white/30 space-y-1">
                         ${item.children.map(ch => `
-                          <button type="button" data-nav="${ch.id}" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] font-semibold transition ${state.activeMenu === ch.id ? 'bg-white text-blue-800 font-bold shadow-sm' : 'text-white/90 hover:bg-white/15'}">
+                          <button type="button" data-nav="${ch.id}" class="nav-btn w-full flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] font-semibold transition ${state.activeMenu === ch.id ? 'bg-white text-red-800 font-bold shadow-sm' : 'text-white/90 hover:bg-white/15'}">
                             <i data-lucide="${ch.icon}" class="w-3.5 h-3.5"></i>
                             <span>${ch.label}</span>
                           </button>
@@ -1206,11 +1216,11 @@
         <footer class="desktop-footer bg-gradient-to-r from-blue-950 via-blue-900 to-blue-800 text-white px-6 py-2 flex items-center justify-between text-xs shrink-0 z-30">
           <div class="flex items-center gap-2 font-bold">
             ${getTutWuriSVG('w-5 h-5')}
-            <span>e-Rapor SD <span class="text-sky-300 font-normal mx-1">|</span> Kemdikdasmen</span>
+            <span>e-Rapor SD <span class="text-rose-200 font-normal mx-1">|</span> Kemdikdasmen</span>
           </div>
-          <div class="italic font-semibold text-sky-100">“Pendidikan Bermutu untuk Semua”</div>
+          <div class="italic font-semibold text-rose-100">“Pendidikan Bermutu untuk Semua”</div>
           <div class="flex items-center gap-2 font-bold">
-            <i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-300"></i>
+            <i data-lucide="calendar" class="w-3.5 h-3.5 text-rose-200"></i>
             <span>Tahun Ajaran ${esc(sek.tahun_ajaran)} (Semester ${esc(state.selectedSemester)})</span>
           </div>
         </footer>
@@ -1274,8 +1284,8 @@
                 { id: 'cetak-rapor', label: 'Cetak Rapor SD', icon: 'printer' },
                 { id: 'pengaturan', label: 'Pengaturan & Akun', icon: 'settings' }
               ].map(m => `
-                <button type="button" onclick="window.__selectMobileMenu('${m.id}')" class="flex items-center gap-2.5 p-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 font-bold text-xs text-left border border-blue-200">
-                  <i data-lucide="${m.icon}" class="w-4 h-4 text-blue-600 shrink-0"></i>
+                <button type="button" onclick="window.__selectMobileMenu('${m.id}')" class="flex items-center gap-2.5 p-3 rounded-xl bg-red-50 hover:bg-red-100 text-blue-900 font-bold text-xs text-left border border-red-200">
+                  <i data-lucide="${m.icon}" class="w-4 h-4 text-red-600 shrink-0"></i>
                   <span>${m.label}</span>
                 </button>
               `).join('')}
@@ -1346,8 +1356,8 @@
       container.innerHTML = `
         <!-- Breadcrumb Bar -->
         <div class="bg-white rounded-2xl px-4 py-2.5 shadow-sm border border-slate-200/80 flex items-center justify-between">
-          <div class="flex items-center gap-2 text-blue-800 font-bold text-xs sm:text-sm">
-            <i data-lucide="home" class="w-4 h-4 text-blue-600"></i>
+          <div class="flex items-center gap-2 text-red-800 font-bold text-xs sm:text-sm">
+            <i data-lucide="home" class="w-4 h-4 text-red-600"></i>
             <span>Dashboard</span>
           </div>
           <span class="text-[11px] font-semibold text-slate-500">
@@ -1360,8 +1370,8 @@
           <!-- Kiri: Rekap Data -->
           <div class="lg:col-span-7 bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80">
             <div class="flex items-center gap-2 mb-4">
-              <i data-lucide="bar-chart-2" class="w-5 h-5 text-blue-700"></i>
-              <h2 class="text-base font-extrabold text-blue-950">Rekap Data</h2>
+              <i data-lucide="bar-chart-2" class="w-5 h-5 text-red-700"></i>
+              <h2 class="text-base font-extrabold text-red-950">Rekap Data</h2>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
@@ -1402,12 +1412,12 @@
           <div class="lg:col-span-5 bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col justify-between gap-4">
             <div>
               <div class="flex items-center gap-2 mb-3">
-                <i data-lucide="megaphone" class="w-5 h-5 text-blue-700"></i>
-                <h2 class="text-base font-extrabold text-blue-950">Informasi Aplikasi</h2>
+                <i data-lucide="megaphone" class="w-5 h-5 text-red-700"></i>
+                <h2 class="text-base font-extrabold text-red-950">Informasi Aplikasi</h2>
               </div>
 
-              <div class="bg-sky-50 border border-sky-200/80 rounded-2xl p-4 flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+              <div class="bg-rose-50 border border-sky-200/80 rounded-2xl p-4 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-red-700 text-white flex items-center justify-center shrink-0 mt-0.5">
                   <i data-lucide="info" class="w-4 h-4"></i>
                 </div>
                 <div>
@@ -1429,7 +1439,7 @@
                   <p class="text-xs text-slate-600 mt-0.5">1. Input TP → 2. Input Nilai & Deskripsi → 3. Nilai Karakter & Ekskul → 4. Cetak Rapor.</p>
                 </div>
               </div>
-              <button type="button" id="btn-download-panduan-dash" class="bg-blue-700 hover:bg-blue-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0 shadow-sm transition">
+              <button type="button" id="btn-download-panduan-dash" class="bg-red-700 hover:bg-blue-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0 shadow-sm transition">
                 <i data-lucide="download" class="w-3.5 h-3.5"></i>
                 <span>Alur</span>
               </button>
@@ -1441,16 +1451,16 @@
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80">
           <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div class="flex items-center gap-2">
-              <i data-lucide="users" class="w-5 h-5 text-blue-700"></i>
-              <h2 class="text-base font-extrabold text-blue-950">Rekap Data Wali Kelas</h2>
+              <i data-lucide="users" class="w-5 h-5 text-red-700"></i>
+              <h2 class="text-base font-extrabold text-red-950">Rekap Data Wali Kelas</h2>
             </div>
-            <span class="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">
+            <span class="text-xs font-bold text-red-700 bg-red-50 px-3 py-1 rounded-full border border-red-200">
               Kelas Binaan: ${esc(state.kelasList.find(k => k.id === walasKelasId)?.nama_kelas || 'Semua Kelas')}
             </span>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
-            <div class="bg-sky-50/80 border border-sky-200/70 rounded-2xl p-3.5 flex items-center gap-3">
+            <div class="bg-rose-50/80 border border-sky-200/70 rounded-2xl p-3.5 flex items-center gap-3">
               <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
                 <i data-lucide="user-check" class="w-5 h-5"></i>
               </div>
@@ -1461,8 +1471,8 @@
               </div>
             </div>
 
-            <div class="bg-blue-50/80 border border-blue-200/70 rounded-2xl p-3.5 flex items-center gap-3">
-              <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+            <div class="bg-red-50/80 border border-red-200/70 rounded-2xl p-3.5 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-blue-100 text-red-700 flex items-center justify-center shrink-0">
                 <i data-lucide="bar-chart" class="w-5 h-5"></i>
               </div>
               <div>
@@ -1511,7 +1521,7 @@
       document.getElementById('btn-download-panduan-dash').onclick = () => {
         openModal('Panduan Singkat Penggunaan e-Rapor SD', `
           <div class="space-y-3 text-xs text-slate-700 leading-relaxed">
-            <div class="p-3 bg-blue-50 rounded-xl border border-blue-200">
+            <div class="p-3 bg-red-50 rounded-xl border border-red-200">
               <strong class="text-blue-900 block mb-1">1. Input Data Siswa & Kelas</strong>
               Pastikan daftar kelas (I–VI) dan siswa binaan sudah lengkap di menu <strong>Data Siswa</strong> (bisa input satuan atau import Excel).
             </div>
@@ -1551,7 +1561,7 @@
                 ${state.kelasList.length === 0 ? `<option value="">-- Belum Ada Kelas (Buat di Pengaturan) --</option>` : ''}
                 ${state.kelasList.map(k => `<option value="${k.id}" ${k.id === kelasFilter ? 'selected' : ''}>${esc(k.nama_kelas)}</option>`).join('')}
               </select>
-              <button type="button" id="btn-import-siswa-excel" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+              <button type="button" id="btn-import-siswa-excel" class="bg-red-700 hover:bg-red-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
                 <i data-lucide="file-up" class="w-4 h-4"></i>
                 <span>Import Excel</span>
               </button>
@@ -1577,7 +1587,7 @@
           <div class="overflow-x-auto rounded-xl border border-slate-200">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-blue-600 text-white">
+                <tr class="bg-red-700 text-white">
                   <th class="py-3 px-3 font-bold">No</th>
                   <th class="py-3 px-3 font-bold">Nama Siswa</th>
                   <th class="py-3 px-3 font-bold">NIS</th>
@@ -1593,19 +1603,19 @@
                 ` : siswaFiltered.map((s, idx) => {
                   const kls = state.kelasList.find(k => k.id === s.kelas_id);
                   return `
-                    <tr class="hover:bg-blue-50/50 transition siswa-row" data-search="${esc((s.nama_siswa + ' ' + s.nis + ' ' + s.nisn).toLowerCase())}">
+                    <tr class="hover:bg-red-50/50 transition siswa-row" data-search="${esc((s.nama_siswa + ' ' + s.nis + ' ' + s.nisn).toLowerCase())}">
                       <td class="py-2.5 px-3 font-semibold text-slate-500">${idx + 1}</td>
                       <td class="py-2.5 px-3 font-bold text-slate-800">${esc(s.nama_siswa)}</td>
                       <td class="py-2.5 px-3 text-slate-600">${esc(s.nis)}</td>
                       <td class="py-2.5 px-3 text-slate-600">${esc(s.nisn)}</td>
                       <td class="py-2.5 px-3 text-center font-bold">${esc(s.jk)}</td>
-                      <td class="py-2.5 px-3"><span class="bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-md">${esc(kls?.nama_kelas || '-')}</span></td>
+                      <td class="py-2.5 px-3"><span class="bg-blue-100 text-red-700 font-bold px-2 py-0.5 rounded-md">${esc(kls?.nama_kelas || '-')}</span></td>
                       <td class="py-2.5 px-3">
                         <div class="flex items-center justify-center gap-1.5">
                           <button type="button" data-edit-siswa="${s.id}" class="btn-edit-siswa bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition">
                             <i data-lucide="edit-2" class="w-3 h-3"></i> Edit
                           </button>
-                          <button type="button" data-detail-siswa="${s.id}" class="btn-detail-siswa bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-300 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition">
+                          <button type="button" data-detail-siswa="${s.id}" class="btn-detail-siswa bg-red-50 hover:bg-red-100 text-red-700 border border-blue-300 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1 transition">
                             <i data-lucide="eye" class="w-3 h-3"></i> Tampil
                           </button>
                           <button type="button" data-del-siswa="${s.id}" class="btn-del-siswa bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-2 py-1 rounded-lg font-bold flex items-center gap-1 transition" title="Hapus Siswa">
@@ -1700,7 +1710,7 @@
           openModal('Detail Data Siswa SD', `
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div class="p-3 bg-slate-50 rounded-xl"><span class="text-slate-400 block">Nama Lengkap</span><strong class="text-slate-800 text-sm">${esc(s.nama_siswa)}</strong></div>
-              <div class="p-3 bg-slate-50 rounded-xl"><span class="text-slate-400 block">Kelas / Rombel</span><strong class="text-blue-700">${esc(kls?.nama_kelas || '-')}</strong></div>
+              <div class="p-3 bg-slate-50 rounded-xl"><span class="text-slate-400 block">Kelas / Rombel</span><strong class="text-red-700">${esc(kls?.nama_kelas || '-')}</strong></div>
               <div class="p-3 bg-slate-50 rounded-xl"><span class="text-slate-400 block">NIS / NISN</span><strong class="text-slate-800">${esc(s.nis)} / ${esc(s.nisn)}</strong></div>
               <div class="p-3 bg-slate-50 rounded-xl"><span class="text-slate-400 block">Jenis Kelamin / Agama</span><strong class="text-slate-800">${s.jk === 'L' ? 'Laki-laki' : 'Perempuan'} / ${esc(s.agama || '-')}</strong></div>
               <div class="p-3 bg-slate-50 rounded-xl sm:col-span-2"><span class="text-slate-400 block">Tempat, Tanggal Lahir</span><strong class="text-slate-800">${esc(s.tempat_lahir || '-')}, ${esc(s.tanggal_lahir || '-')}</strong></div>
@@ -1719,7 +1729,7 @@
       const klsObj = state.kelasList.find(k => k.id === defaultKelasId) || state.kelasList[0];
       openModal('Import Data Siswa dari Excel (.xlsx / .csv)', `
         <div class="space-y-4 text-xs">
-          <div class="bg-blue-50 border border-blue-200 rounded-xl p-3.5 text-blue-900 space-y-2">
+          <div class="bg-red-50 border border-red-200 rounded-xl p-3.5 text-blue-900 space-y-2">
             <p class="font-bold">Langkah Mudah Import Data Siswa:</p>
             <ol class="list-decimal ml-4 space-y-1">
               <li>Unduh format template Excel di bawah ini (sudah tertata rapi tanpa kolom data pelengkap).</li>
@@ -1727,7 +1737,7 @@
               <li>Pilih file Excel yang sudah diisi, lalu klik <strong>Proses Import Siswa</strong>.</li>
             </ol>
             <div class="pt-1">
-              <button type="button" id="btn-dl-template-siswa" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl font-bold inline-flex items-center gap-1.5 shadow-sm transition">
+              <button type="button" id="btn-dl-template-siswa" class="bg-red-700 hover:bg-red-800 text-white px-3.5 py-2 rounded-xl font-bold inline-flex items-center gap-1.5 shadow-sm transition">
                 <i data-lucide="download" class="w-4 h-4"></i>
                 <span>Download Template Excel Siswa (.xlsx)</span>
               </button>
@@ -1995,7 +2005,7 @@
           <div class="overflow-x-auto rounded-xl border border-slate-200">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-blue-600 text-white">
+                <tr class="bg-red-700 text-white">
                   <th class="py-3 px-3 font-bold w-12">No</th>
                   <th class="py-3 px-3 font-bold w-20 text-center">Tingkat</th>
                   <th class="py-3 px-3 font-bold w-20 text-center">Semester</th>
@@ -2086,7 +2096,7 @@
             </div>
             <div class="flex justify-end gap-2 pt-2 border-t">
               <button type="button" onclick="document.getElementById('close-modal-btn').click()" class="px-4 py-2 rounded-xl bg-slate-100 font-bold">Batal</button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold">Proses & Simpan TP</button>
+              <button type="submit" class="px-5 py-2 rounded-xl bg-red-700 text-white font-bold">Proses & Simpan TP</button>
             </div>
           </form>
         `, 'max-w-lg');
@@ -2217,7 +2227,7 @@
               <h2 class="text-lg font-extrabold text-slate-800">Input Nilai Akhir Rapor Siswa</h2>
               <p class="text-xs text-slate-500">Isi nilai rapor (0–100) dan centang ketercapaian TP untuk membuat deskripsi rapor otomatis.</p>
             </div>
-            <button type="button" id="btn-switch-nilai-mode" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+            <button type="button" id="btn-switch-nilai-mode" class="bg-red-700 hover:bg-red-800 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
               <i data-lucide="${state.nilaiEditMode === 'tp' ? 'file-text' : 'check-square'}" class="w-4 h-4"></i>
               <span>${state.nilaiEditMode === 'tp' ? 'Lihat dan Edit Deskripsi' : 'Lihat dan Edit Ketercapaian TP'}</span>
             </button>
@@ -2248,7 +2258,7 @@
           <div class="overflow-x-auto rounded-xl border border-slate-200">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-blue-600 text-white">
+                <tr class="bg-red-700 text-white">
                   <th class="py-3 px-3 font-bold w-10">No</th>
                   <th class="py-3 px-3 font-bold min-w-[160px]">Nama Siswa</th>
                   <th class="py-3 px-3 font-bold w-24 text-center">Nilai</th>
@@ -2272,7 +2282,7 @@
                   const penIds = Array.isArray(existing.tp_peningkatan_ids) ? existing.tp_peningkatan_ids : [];
 
                   return `
-                    <tr class="align-top hover:bg-blue-50/30" data-siswa-nilai-row="${s.id}">
+                    <tr class="align-top hover:bg-red-50/30" data-siswa-nilai-row="${s.id}">
                       <td class="py-3 px-3 font-bold text-slate-500">${idx + 1}</td>
                       <td class="py-3 px-3">
                         <div class="font-bold text-slate-800">${esc(s.nama_siswa)}</div>
@@ -2286,7 +2296,7 @@
                         <td class="py-3 px-3 space-y-1.5">
                           ${tpAktif.length === 0 ? `<span class="text-slate-400 italic">Belum ada TP aktif.</span>` : tpAktif.map(tp => `
                             <label class="flex items-start gap-2 cursor-pointer p-1 rounded hover:bg-emerald-50">
-                              <input type="checkbox" value="${tp.id}" ${optIds.includes(tp.id) ? 'checked' : ''} class="chk-tp-opt mt-0.5 rounded text-blue-600" />
+                              <input type="checkbox" value="${tp.id}" ${optIds.includes(tp.id) ? 'checked' : ''} class="chk-tp-opt mt-0.5 rounded text-red-600" />
                               <span class="text-[11px] text-slate-700 leading-snug">${esc(tp.deskripsi_tp)}</span>
                             </label>
                           `).join('')}
@@ -2452,10 +2462,10 @@
           <div class="rounded-2xl border border-slate-200 overflow-hidden">
             <div class="bg-slate-100 px-4 py-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200">
               <span class="font-extrabold text-xs sm:text-sm text-slate-800 flex items-center gap-2">
-                <i data-lucide="file-spreadsheet" class="w-4 h-4 text-blue-700"></i>
+                <i data-lucide="file-spreadsheet" class="w-4 h-4 text-red-700"></i>
                 <span>Import Nilai Rapor</span>
               </span>
-              <button type="button" id="btn-download-template-nilai" class="bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
+              <button type="button" id="btn-download-template-nilai" class="bg-red-700 hover:bg-red-800 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition">
                 <i data-lucide="download" class="w-3.5 h-3.5"></i>
                 <span>Download Format Nilai ${esc(mapelObj?.kode_mapel || '')} (.xlsx)</span>
               </button>
@@ -2464,7 +2474,7 @@
             <div class="p-5 space-y-4">
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-2">Pilih File Nilai (Format .XLSX atau .CSV dari Template)</label>
-                <input type="file" id="file-import-nilai" accept=".xlsx,.xls,.csv" class="block w-full text-xs text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-slate-300 rounded-xl p-1.5" />
+                <input type="file" id="file-import-nilai" accept=".xlsx,.xls,.csv" class="block w-full text-xs text-slate-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-50 file:text-red-700 hover:file:bg-blue-100 border border-slate-300 rounded-xl p-1.5" />
               </div>
 
               <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900">
@@ -2598,7 +2608,7 @@
             <div class="overflow-x-auto rounded-xl border border-slate-200">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr class="bg-blue-600 text-white">
+                  <tr class="bg-red-700 text-white">
                     <th class="py-2.5 px-3 font-bold w-12">No</th>
                     <th class="py-2.5 px-3 font-bold">Nama Mata Pelajaran</th>
                     <th class="py-2.5 px-3 font-bold">Rombel</th>
@@ -2637,7 +2647,7 @@
             <div class="overflow-x-auto rounded-xl border border-slate-200">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr class="bg-blue-600 text-white">
+                  <tr class="bg-red-700 text-white">
                     <th class="py-2.5 px-3 font-bold w-12">No</th>
                     <th class="py-2.5 px-3 font-bold">Nama Siswa</th>
                     <th class="py-2.5 px-3 font-bold">NISN / NIS</th>
@@ -2654,10 +2664,10 @@
                         <td class="py-2.5 px-3 font-bold text-slate-500">${idx + 1}</td>
                         <td class="py-2.5 px-3 font-bold text-slate-800">${esc(s.nama_siswa)}</td>
                         <td class="py-2.5 px-3 text-slate-500">${esc(s.nisn)} / ${esc(s.nis)}</td>
-                        <td class="py-2.5 px-3 text-center font-extrabold text-blue-700">${avg}</td>
+                        <td class="py-2.5 px-3 text-center font-extrabold text-red-700">${avg}</td>
                         <td class="py-2.5 px-3 text-center">
                           <div class="flex items-center justify-center gap-2">
-                            <button type="button" data-cek-nilai-siswa="${s.id}" class="btn-cek-nilai-siswa bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-300 px-2.5 py-1 rounded-lg font-bold">
+                            <button type="button" data-cek-nilai-siswa="${s.id}" class="btn-cek-nilai-siswa bg-red-50 hover:bg-red-100 text-red-700 border border-blue-300 px-2.5 py-1 rounded-lg font-bold">
                               Cek Capaian Nilai
                             </button>
                             <button type="button" data-cek-desc-siswa="${s.id}" class="btn-cek-desc-siswa bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 px-2.5 py-1 rounded-lg font-bold">
@@ -2684,7 +2694,7 @@
           openModal(`Daftar Capaian Nilai Rapor - ${s.nama_siswa}`, `
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-blue-600 text-white">
+                <tr class="bg-red-700 text-white">
                   <th class="py-2 px-3">No</th>
                   <th class="py-2 px-3">Mata Pelajaran</th>
                   <th class="py-2 px-3 text-center">Smt 1</th>
@@ -2704,7 +2714,7 @@
                       <td class="py-2 px-3 font-bold">${esc(m.nama_mapel)}</td>
                       <td class="py-2 px-3 text-center">${n1 ?? '-'}</td>
                       <td class="py-2 px-3 text-center">${n2 ?? '-'}</td>
-                      <td class="py-2 px-3 text-center font-bold text-blue-700">${rata}</td>
+                      <td class="py-2 px-3 text-center font-bold text-red-700">${rata}</td>
                     </tr>
                   `;
                 }).join('')}
@@ -2750,7 +2760,7 @@
               <h2 class="text-lg font-extrabold text-slate-800">Input Nilai Karakter Profil Pelajar Pancasila (P3)</h2>
               <p class="text-xs text-slate-500">Observasi perkembangan karakter 6 Dimensi Profil Pelajar Pancasila peserta didik SD.</p>
             </div>
-            <button type="button" id="btn-apply-all-p3" class="bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+            <button type="button" id="btn-apply-all-p3" class="bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
               <i data-lucide="copy-check" class="w-4 h-4"></i>
               <span>Terapkan "Berkembang Sesuai Harapan" ke Semua</span>
             </button>
@@ -2781,7 +2791,7 @@
           <div class="overflow-x-auto rounded-xl border border-slate-200">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-blue-600 text-white">
+                <tr class="bg-red-700 text-white">
                   <th class="py-2.5 px-3 font-bold w-10">No</th>
                   <th class="py-2.5 px-3 font-bold min-w-[160px]">Nama Siswa</th>
                   ${dimObj.elemen.map(el => `<th class="py-2.5 px-3 font-bold min-w-[155px]">${esc(el)}</th>`).join('')}
@@ -2917,7 +2927,7 @@
           <div class="overflow-x-auto rounded-xl border border-slate-200">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-blue-600 text-white">
+                <tr class="bg-red-700 text-white">
                   <th class="py-2.5 px-3 font-bold w-10">No</th>
                   <th class="py-2.5 px-3 font-bold">Nama Siswa</th>
                   <th class="py-2.5 px-3 font-bold">Kegiatan Ekskul</th>
@@ -2935,7 +2945,7 @@
                     <tr class="hover:bg-slate-50">
                       <td class="py-2.5 px-3 font-bold text-slate-500">${idx + 1}</td>
                       <td class="py-2.5 px-3 font-bold text-slate-800">${esc(s?.nama_siswa || '-')}</td>
-                      <td class="py-2.5 px-3 font-semibold text-blue-700">${esc(ek.nama_ekskul)}</td>
+                      <td class="py-2.5 px-3 font-semibold text-red-700">${esc(ek.nama_ekskul)}</td>
                       <td class="py-2.5 px-3 text-center"><span class="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full">${esc(ek.predikat)}</span></td>
                       <td class="py-2.5 px-3 text-slate-600">${esc(ek.deskripsi)}</td>
                       <td class="py-2.5 px-3 text-center">
@@ -3076,7 +3086,7 @@
           <div class="overflow-x-auto rounded-xl border border-slate-200">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-blue-600 text-white">
+                <tr class="bg-red-700 text-white">
                   <th class="py-2.5 px-3 font-bold w-10">No</th>
                   <th class="py-2.5 px-3 font-bold min-w-[150px]">Nama Siswa</th>
                   <th class="py-2.5 px-2 font-bold w-16 text-center">Sakit</th>
@@ -3180,6 +3190,29 @@
       const siswaKelas = state.siswaList.filter(s => s.kelas_id === kelasId);
       const pc = state.printConfig;
 
+      // Hitung Jumlah, Rata-Rata & Urutan Juara Kelas (hanya tampil di aplikasi, tidak masuk cetak)
+      const siswaStats = siswaKelas.map(s => {
+        const nilaiValid = state.mapelList
+          .map(m => state.nilaiRaporList.find(n => n.siswa_id === s.id && n.mapel_id === m.id && String(n.semester) === String(state.selectedSemester)))
+          .filter(nr => nr && typeof nr.nilai_akhir === 'number');
+        const jumlah = nilaiValid.reduce((acc, nr) => acc + Number(nr.nilai_akhir), 0);
+        const rata = nilaiValid.length > 0 ? Number((jumlah / nilaiValid.length).toFixed(1)) : 0;
+        return { id: s.id, jumlah, rata, count: nilaiValid.length };
+      });
+      const rankedIds = [...siswaStats]
+        .filter(st => st.count > 0)
+        .sort((a, b) => b.jumlah - a.jumlah || b.rata - a.rata)
+        .map(st => st.id);
+      const getRankBadge = (siswaId) => {
+        const idx = rankedIds.indexOf(siswaId);
+        if (idx < 0) return '<span class="text-slate-400">-</span>';
+        const rank = idx + 1;
+        if (rank === 1) return '<span class="inline-flex items-center gap-1 bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full font-extrabold">🥇 Juara 1</span>';
+        if (rank === 2) return '<span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full font-extrabold">🥈 Juara 2</span>';
+        if (rank === 3) return '<span class="inline-flex items-center gap-1 bg-orange-100 text-orange-800 border border-orange-300 px-2.5 py-0.5 rounded-full font-extrabold">🥉 Juara 3</span>';
+        return `<span class="inline-flex items-center bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-0.5 rounded-full font-bold">Peringkat ${rank}</span>`;
+      };
+
       container.innerHTML = `
         <div class="space-y-5">
           <!-- Pengaturan Kertas, Margin & Download Leger -->
@@ -3189,7 +3222,7 @@
                 <h2 class="text-lg font-extrabold text-slate-800">Cetak Leger, Pelengkap Rapor & Nilai Rapor SD</h2>
                 <p class="text-xs text-slate-500">Atur ukuran kertas, margin cetakan (mm), dan opsi tanda tangan sebelum mencetak.</p>
               </div>
-              <button type="button" id="btn-download-leger" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition">
+              <button type="button" id="btn-download-leger" class="bg-red-700 hover:bg-red-800 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm transition">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                 <span>Download Leger Kelas (.xlsx)</span>
               </button>
@@ -3236,7 +3269,7 @@
                 </select>
               </div>
               <div class="flex flex-wrap gap-2">
-                <button type="button" id="btn-cetak-semua-pelengkap" class="bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                <button type="button" id="btn-cetak-semua-pelengkap" class="bg-rose-600 hover:bg-rose-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm">
                   <i data-lucide="book" class="w-4 h-4"></i>
                   <span>Cetak Semua Pelengkap Rapor</span>
                 </button>
@@ -3253,26 +3286,34 @@
             <div class="overflow-x-auto rounded-xl border border-slate-200">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr class="bg-blue-600 text-white">
+                  <tr class="bg-red-700 text-white">
                     <th class="py-3 px-3 font-bold w-12">No</th>
                     <th class="py-3 px-3 font-bold">Nama Siswa</th>
                     <th class="py-3 px-3 font-bold">NISN / NIS</th>
                     <th class="py-3 px-3 font-bold">Rombel</th>
+                    <th class="py-3 px-3 font-bold text-center">Jumlah</th>
+                    <th class="py-3 px-3 font-bold text-center">Rata-Rata</th>
+                    <th class="py-3 px-3 font-bold text-center">Juara Kelas</th>
                     <th class="py-3 px-3 font-bold text-center">Dokumen Pelengkap</th>
                     <th class="py-3 px-3 font-bold text-center">Dokumen Nilai Rapor</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
                   ${siswaKelas.length === 0 ? `
-                    <tr><td colspan="6" class="py-8 text-center text-slate-400">Belum ada siswa di kelas ini.</td></tr>
-                  ` : siswaKelas.map((s, idx) => `
+                    <tr><td colspan="9" class="py-8 text-center text-slate-400">Belum ada siswa di kelas ini.</td></tr>
+                  ` : siswaKelas.map((s, idx) => {
+                    const st = siswaStats.find(item => item.id === s.id);
+                    return `
                     <tr class="hover:bg-slate-50">
                       <td class="py-2.5 px-3 font-bold text-slate-500">${idx + 1}</td>
                       <td class="py-2.5 px-3 font-bold text-slate-800">${esc(s.nama_siswa)}</td>
                       <td class="py-2.5 px-3 text-slate-600">${esc(s.nisn)} / ${esc(s.nis)}</td>
                       <td class="py-2.5 px-3 font-semibold">${esc(kelasObj?.nama_kelas || '-')}</td>
+                      <td class="py-2.5 px-3 text-center font-extrabold text-slate-800">${st?.count ? st.jumlah : '-'}</td>
+                      <td class="py-2.5 px-3 text-center font-extrabold text-red-700">${st?.count ? st.rata : '-'}</td>
+                      <td class="py-2.5 px-3 text-center">${getRankBadge(s.id)}</td>
                       <td class="py-2.5 px-3 text-center">
-                        <button type="button" data-print-pelengkap="${s.id}" class="btn-print-pelengkap bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-300 px-3 py-1.5 rounded-lg font-bold inline-flex items-center gap-1">
+                        <button type="button" data-print-pelengkap="${s.id}" class="btn-print-pelengkap bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 px-3 py-1.5 rounded-lg font-bold inline-flex items-center gap-1">
                           <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Pelengkap Rapor
                         </button>
                       </td>
@@ -3282,7 +3323,7 @@
                         </button>
                       </td>
                     </tr>
-                  `).join('')}
+                  `; }).join('')}
                 </tbody>
               </table>
             </div>
@@ -3448,28 +3489,90 @@
         const wajibMapel = sortedMapel.filter(m => !m.kelompok || m.kelompok === 'Wajib');
         const pilihanMapel = sortedMapel.filter(m => m.kelompok === 'Pilihan' || m.kelompok === 'Muatan Lokal');
 
+        const getPredikat = (val) => {
+          if (typeof val !== 'number' || isNaN(val)) return '-';
+          if (val >= 87) return 'A';
+          if (val >= 73) return 'B';
+          if (val >= 60) return 'C';
+          return 'D';
+        };
+
+        const getDeskripsiKeterampilan = (nr, pred) => {
+          if (nr?.deskripsi_keterampilan && nr.deskripsi_keterampilan.trim()) return nr.deskripsi_keterampilan.trim();
+          if (pred === 'A') return 'Sangat baik dan sempurna. Sangat aktif bertanya, mencoba, menalar, dan kreatif dalam menyelesaikan semua tugas dan praktik.';
+          if (pred === 'B') return 'Baik sekali. Aktif bertanya, mencoba, menalar, dan kreatif dalam menyelesaikan sebagian besar tugas dan praktik.';
+          if (pred === 'C') return 'Cukup baik. Mulai aktif mencoba dan menalar dalam menyelesaikan tugas praktik, namun masih perlu bimbingan lebih lanjut.';
+          if (pred === 'D') return 'Perlu bimbingan dan pendampingan lebih lanjut dalam melatih keterampilan praktik dan penyelesaian tugas.';
+          return '-';
+        };
+
+        let sumPengetahuan = 0, cntPengetahuan = 0;
+        let sumKeterampilan = 0, cntKeterampilan = 0;
+
         const renderMapelRows = (list) => list.map((m, i) => {
           const nr = state.nilaiRaporList.find(n => n.siswa_id === s.id && n.mapel_id === m.id && String(n.semester) === String(state.selectedSemester));
+          const nPeng = typeof nr?.nilai_pengetahuan === 'number' ? nr.nilai_pengetahuan : (typeof nr?.nilai_akhir === 'number' ? nr.nilai_akhir : null);
+          const nKet = typeof nr?.nilai_keterampilan === 'number' ? nr.nilai_keterampilan : (typeof nr?.nilai_akhir === 'number' ? nr.nilai_akhir : null);
+          if (nPeng !== null) { sumPengetahuan += nPeng; cntPengetahuan++; }
+          if (nKet !== null) { sumKeterampilan += nKet; cntKeterampilan++; }
+
+          const predPeng = getPredikat(nPeng);
+          const predKet = getPredikat(nKet);
+
           const tinggi = (nr?.deskripsi_tertinggi || '').trim();
           const rendah = (nr?.deskripsi_terendah || '').trim();
-          let capaianHtml = '-';
+          let descPengHtml = '-';
           if (tinggi && rendah) {
-            capaianHtml = `<div>${esc(tinggi)}</div><div style="margin-top: 2px;">${esc(rendah)}</div>`;
+            descPengHtml = `<div>${esc(tinggi)}</div><div style="margin-top: 2px;">${esc(rendah)}</div>`;
           } else if (tinggi || rendah) {
-            capaianHtml = esc(tinggi || rendah);
+            descPengHtml = esc(tinggi || rendah);
           }
+
+          const descKetText = getDeskripsiKeterampilan(nr, predKet);
+
           return `
             <tr>
               <td style="text-align: center; vertical-align: middle;">${i + 1}</td>
               <td style="vertical-align: middle;">${esc(m.nama_mapel)}</td>
-              <td style="text-align: center; vertical-align: middle; font-weight: bold;">${nr?.nilai_akhir ?? '-'}</td>
-              <td style="line-height: 1.38;">${capaianHtml}</td>
+              <td style="text-align: center; vertical-align: middle; font-weight: bold;">${nPeng ?? '-'}</td>
+              <td style="text-align: center; vertical-align: middle; font-weight: bold;">${predPeng}</td>
+              <td style="line-height: 1.32;">${descPengHtml}</td>
+              <td style="text-align: center; vertical-align: middle; font-weight: bold;">${nKet ?? '-'}</td>
+              <td style="text-align: center; vertical-align: middle; font-weight: bold;">${predKet}</td>
+              <td style="line-height: 1.32;">${esc(descKetText)}</td>
             </tr>
           `;
         }).join('');
 
+        const wajibRowsHtml = wajibMapel.length > 0 ? renderMapelRows(wajibMapel) : `
+          <tr>
+            <td style="text-align: center;">-</td>
+            <td colspan="7" style="text-align: center;">Belum ada data mata pelajaran wajib</td>
+          </tr>
+        `;
+        const pilihanRowsHtml = pilihanMapel.length > 0 ? renderMapelRows(pilihanMapel) : `
+          <tr>
+            <td style="text-align: center;">-</td>
+            <td style="color: #475569;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="color: #475569;">Belum ada mata pelajaran pilihan</td>
+            <td style="text-align: center;">-</td>
+            <td style="text-align: center;">-</td>
+            <td style="color: #475569;">-</td>
+          </tr>
+        `;
+
+        const avgPengetahuan = cntPengetahuan > 0 ? (sumPengetahuan / cntPengetahuan).toFixed(1).replace('.', ',') : '-';
+        const avgKeterampilan = cntKeterampilan > 0 ? (sumKeterampilan / cntKeterampilan).toFixed(1).replace('.', ',') : '-';
+
+        const waliOverride = state.waliKelasOverride?.[kls?.id] || state.waliKelasOverride?.['_default'] || null;
+        const namaWaliCetak = (waliOverride?.nama || '').trim() || waliGuru?.nama_lengkap || waliGuru?.nama || '';
+        const nipWaliCetak = (waliOverride?.nip || '').trim() || waliGuru?.nip || '-';
+
         return `
-          <div class="rapor-doc ${pageBreakClass}" style="padding: ${pc.marginAtas}mm ${pc.marginKanan}mm ${pc.marginBawah}mm ${pc.marginKiri}mm;">
+          <!-- HALAMAN 1: KHUSUS NILAI PENGETAHUAN & KETERAMPILAN -->
+          <div class="rapor-doc page-break" style="padding: ${pc.marginAtas}mm ${pc.marginKanan}mm ${pc.marginBawah}mm ${pc.marginKiri}mm;">
             <!-- IDENTITAS PESERTA DIDIK & SEKOLAH -->
             <table class="rapor-info-table">
               <tr>
@@ -3493,40 +3596,53 @@
 
             <h2 class="rapor-title">LAPORAN HASIL BELAJAR</h2>
 
-            <!-- TABEL CAPAIAN KOMPETENSI MATA PELAJARAN -->
-            <table class="rapor-table">
+            <!-- TABEL KOMPETENSI PENGETAHUAN & KETERAMPILAN -->
+            <table class="rapor-table" style="font-size: 8pt;">
               <thead>
                 <tr>
-                  <th style="width: 5%;">No</th>
-                  <th style="width: 26%;">Mata Pelajaran</th>
-                  <th style="width: 11%;">Nilai Akhir</th>
-                  <th>Capaian Kompetensi</th>
+                  <th rowspan="2" style="width: 4%;">No</th>
+                  <th rowspan="2" style="width: 20%;">Mata Pelajaran</th>
+                  <th colspan="3">Pengetahuan</th>
+                  <th colspan="3">Keterampilan</th>
+                </tr>
+                <tr>
+                  <th style="width: 6%;">Nilai</th>
+                  <th style="width: 7%;">Predikat</th>
+                  <th style="width: 25%;">Deskripsi</th>
+                  <th style="width: 6%;">Nilai</th>
+                  <th style="width: 7%;">Predikat</th>
+                  <th style="width: 25%;">Deskripsi</th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="rapor-group-row">
-                  <td colspan="4">Mata Pelajaran Wajib</td>
+                  <td colspan="8">Mata Pelajaran Wajib</td>
                 </tr>
-                ${wajibMapel.length > 0 ? renderMapelRows(wajibMapel) : `
-                  <tr>
-                    <td style="text-align: center;">-</td>
-                    <td colspan="3" style="text-align: center;">Belum ada data mata pelajaran wajib</td>
-                  </tr>
-                `}
+                ${wajibRowsHtml}
                 <tr class="rapor-group-row">
-                  <td colspan="4">Mata Pelajaran Pilihan</td>
+                  <td colspan="8">Mata Pelajaran Pilihan</td>
                 </tr>
-                ${pilihanMapel.length > 0 ? renderMapelRows(pilihanMapel) : `
-                  <tr>
-                    <td style="text-align: center;">-</td>
-                    <td style="color: #475569;">-</td>
-                    <td style="text-align: center;">-</td>
-                    <td style="color: #475569;">Belum ada mata pelajaran pilihan</td>
-                  </tr>
-                `}
+                ${pilihanRowsHtml}
+                <tr>
+                  <td colspan="2" style="font-weight: bold; text-align: center; background-color: #F8FAFC !important;">Jumlah</td>
+                  <td style="font-weight: bold; text-align: center; background-color: #F8FAFC !important;">${cntPengetahuan > 0 ? sumPengetahuan : '-'}</td>
+                  <td colspan="2" style="background-color: #F8FAFC !important;"></td>
+                  <td style="font-weight: bold; text-align: center; background-color: #F8FAFC !important;">${cntKeterampilan > 0 ? sumKeterampilan : '-'}</td>
+                  <td colspan="2" style="background-color: #F8FAFC !important;"></td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="font-weight: bold; text-align: center; background-color: #F8FAFC !important;">Rata-Rata</td>
+                  <td style="font-weight: bold; text-align: center; background-color: #F8FAFC !important;">${avgPengetahuan}</td>
+                  <td colspan="2" style="background-color: #F8FAFC !important;"></td>
+                  <td style="font-weight: bold; text-align: center; background-color: #F8FAFC !important;">${avgKeterampilan}</td>
+                  <td colspan="2" style="background-color: #F8FAFC !important;"></td>
+                </tr>
               </tbody>
             </table>
+          </div>
 
+          <!-- HALAMAN 2: KOKURIKULER, EKSTRAKURIKULER, KETIDAKHADIRAN, CATATAN & TANDA TANGAN -->
+          <div class="rapor-doc ${pageBreakClass}" style="padding: ${pc.marginAtas}mm ${pc.marginKanan}mm ${pc.marginBawah}mm ${pc.marginKiri}mm;">
             <!-- KOKURIKULER (PROFIL PELAJAR PANCASILA) -->
             <table class="rapor-table rapor-avoid-break">
               <thead>
@@ -3616,24 +3732,24 @@
             ` : ''}
 
             ${pc.tandaTangan ? `
-              <table class="rapor-avoid-break" style="width: 100%; margin-top: 18px; font-size: 9.5pt; text-align: center; border-collapse: collapse;">
+              <table class="rapor-avoid-break" style="width: 100%; margin-top: 24px; font-size: 9.5pt; text-align: center; border-collapse: collapse;">
                 <tr>
                   <td style="width: 33%; border: none; vertical-align: top;">
                     Mengetahui,<br/>Orang Tua / Wali,<br/>
-                    <div style="height: 52px;"></div>
+                    <div style="height: 54px;"></div>
                     ( ........................................ )
                   </td>
                   <td style="width: 34%; border: none; vertical-align: top;">
                     Mengetahui,<br/>Kepala Sekolah,<br/>
-                    <div style="height: 52px;"></div>
+                    <div style="height: 54px;"></div>
                     <strong><u>${esc(sek.kepala_sekolah)}</u></strong><br/>
                     NIP. ${esc(sek.nip_kepsek)}
                   </td>
                   <td style="width: 33%; border: none; vertical-align: top;">
                     ${esc(sek.kabupaten)}, ${esc(sek.tanggal_rapor)}<br/>Wali Kelas,<br/>
-                    <div style="height: 52px;"></div>
-                    <strong><u>${esc(waliGuru?.nama_lengkap || waliGuru?.nama || '')}</u></strong><br/>
-                    NIP. ${esc(waliGuru?.nip || '-')}
+                    <div style="height: 54px;"></div>
+                    <strong><u>${esc(namaWaliCetak)}</u></strong><br/>
+                    NIP. ${esc(nipWaliCetak)}
                   </td>
                 </tr>
               </table>
@@ -3677,7 +3793,7 @@
           <!-- Kartu 1: Informasi Akun Aktif & Download Paket ZIP -->
           <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3.5">
-              <div class="w-12 h-12 rounded-2xl bg-blue-700 text-white flex items-center justify-center font-extrabold text-lg">
+              <div class="w-12 h-12 rounded-2xl bg-red-700 text-white flex items-center justify-center font-extrabold text-lg">
                 ${esc(state.currentUser.nama.charAt(0).toUpperCase())}
               </div>
               <div>
@@ -3686,7 +3802,7 @@
               </div>
             </div>
             <div class="flex flex-wrap gap-2">
-              <button type="button" id="btn-ganti-password-self" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
+              <button type="button" id="btn-ganti-password-self" class="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
                 <i data-lucide="key" class="w-4 h-4"></i>
                 <span>Ganti Password Akun</span>
               </button>
@@ -3718,6 +3834,34 @@
             </form>
           </div>
 
+          <!-- Kartu 2B: Pengaturan Nama & NIP Wali Kelas (Untuk Tanda Tangan Rapor) -->
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80">
+            <h3 class="text-base font-extrabold text-slate-800 pb-3 border-b border-slate-100 mb-4">Pengaturan Nama &amp; NIP Wali Kelas (Untuk Cetak Rapor)</h3>
+            <form id="form-wali-kelas-rapor" class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs items-end">
+              <div>
+                <label class="font-bold text-slate-600 block mb-1">Pilih Kelas</label>
+                <select id="wk-kelas-select" name="kelas_id" class="w-full border border-slate-300 rounded-xl px-3 py-2 font-bold">
+                  <option value="_default">Default Semua Kelas</option>
+                  ${state.kelasList.map(k => `<option value="${k.id}">${esc(k.nama_kelas)}</option>`).join('')}
+                </select>
+              </div>
+              <div>
+                <label class="font-bold text-slate-600 block mb-1">Nama Wali Kelas *</label>
+                <input type="text" id="wk-nama-input" name="nama_wali" required placeholder="Contoh: Ahmad Fadli, S.Pd." class="w-full border border-slate-300 rounded-xl px-3 py-2 font-bold" />
+              </div>
+              <div>
+                <label class="font-bold text-slate-600 block mb-1">NIP Wali Kelas</label>
+                <input type="text" id="wk-nip-input" name="nip_wali" placeholder="Contoh: 198804152015031002 (atau -)" class="w-full border border-slate-300 rounded-xl px-3 py-2" />
+              </div>
+              <div class="sm:col-span-3 flex justify-end pt-1">
+                <button type="submit" class="bg-red-700 hover:bg-red-800 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-1.5 shadow-sm">
+                  <i data-lucide="user-check" class="w-4 h-4"></i>
+                  <span>Simpan Nama &amp; NIP Wali Kelas</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
           <!-- Kartu 3: Manajemen Akun Guru & Kelas SD -->
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
             <!-- Daftar Akun Guru -->
@@ -3727,7 +3871,7 @@
                   <h3 class="text-base font-extrabold text-slate-800">Akun Guru & Wali Kelas</h3>
                   <p class="text-[11px] text-slate-500">Login dari perangkat mana pun memakai Nama Lengkap atau NIP + Password.</p>
                 </div>
-                <button type="button" id="btn-add-guru-account" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                <button type="button" id="btn-add-guru-account" class="bg-red-700 hover:bg-red-800 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                   <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
                   <span>+ Buat Akun Guru</span>
                 </button>
@@ -3736,7 +3880,7 @@
               <div class="overflow-x-auto rounded-xl border border-slate-200">
                 <table class="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr class="bg-blue-600 text-white">
+                    <tr class="bg-red-700 text-white">
                       <th class="py-2 px-3">Nama Guru & NIP</th>
                       <th class="py-2 px-3">Jabatan / Sekolah</th>
                       <th class="py-2 px-3 text-center">Aksi</th>
@@ -3750,7 +3894,7 @@
                       const parsed = parseGuruRoleAndSchool(g.role, sek.nama_sekolah);
                       return `
                         <tr>
-                          <td class="py-2 px-3 font-bold text-slate-800">${esc(g.nama_lengkap)}<div class="text-[10px] font-mono text-blue-700">NIP: ${esc(g.nip || '-')}</div></td>
+                          <td class="py-2 px-3 font-bold text-slate-800">${esc(g.nama_lengkap)}<div class="text-[10px] font-mono text-red-700">NIP: ${esc(g.nip || '-')}</div></td>
                           <td class="py-2 px-3">${esc(kls ? `Wali Kelas ${kls.nama_kelas}` : parsed.jabatan)}<div class="text-[10px] text-slate-400">${esc(parsed.namaSekolah)}</div></td>
                           <td class="py-2 px-3 text-center">
                             <button type="button" data-del-guru="${g.id}" class="btn-del-guru text-rose-600 hover:bg-rose-50 p-1.5 rounded-lg">
@@ -3781,7 +3925,7 @@
               <div class="overflow-x-auto rounded-xl border border-slate-200">
                 <table class="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr class="bg-blue-600 text-white">
+                    <tr class="bg-red-700 text-white">
                       <th class="py-2 px-3">Kelas</th>
                       <th class="py-2 px-3 text-center">Tingkat</th>
                       <th class="py-2 px-3 text-center">Fase</th>
@@ -3795,7 +3939,7 @@
                       <tr>
                         <td class="py-2 px-3 font-bold text-slate-800">${esc(k.nama_kelas)}</td>
                         <td class="py-2 px-3 text-center">Kelas ${k.tingkat}</td>
-                        <td class="py-2 px-3 text-center"><span class="bg-blue-50 text-blue-700 font-bold px-2 py-0.5 rounded">Fase ${esc(k.fase)}</span></td>
+                        <td class="py-2 px-3 text-center"><span class="bg-red-50 text-red-700 font-bold px-2 py-0.5 rounded">Fase ${esc(k.fase)}</span></td>
                         <td class="py-2 px-3 text-center">
                           <button type="button" data-del-kelas="${k.id}" class="btn-del-kelas text-rose-600 hover:bg-rose-50 p-1.5 rounded-lg">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -3818,7 +3962,7 @@
               </div>
               <div class="flex flex-wrap gap-2">
                 ${state.mapelList.length === 0 ? `
-                  <button type="button" id="btn-seed-mapel-sd" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
+                  <button type="button" id="btn-seed-mapel-sd" class="bg-red-700 hover:bg-red-800 text-white px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1">
                     <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                     <span>Isi Mapel Standar SD</span>
                   </button>
@@ -3833,7 +3977,7 @@
             <div class="overflow-x-auto rounded-xl border border-slate-200">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr class="bg-blue-600 text-white">
+                  <tr class="bg-red-700 text-white">
                     <th class="py-2 px-3 w-14 text-center">Urut</th>
                     <th class="py-2 px-3 w-24">Kode</th>
                     <th class="py-2 px-3">Nama Mata Pelajaran</th>
@@ -3847,7 +3991,7 @@
                   ` : state.mapelList.map(m => `
                     <tr>
                       <td class="py-2 px-3 text-center font-bold text-slate-500">${esc(m.urutan)}</td>
-                      <td class="py-2 px-3 font-mono font-bold text-blue-700">${esc(m.kode_mapel)}</td>
+                      <td class="py-2 px-3 font-mono font-bold text-red-700">${esc(m.kode_mapel)}</td>
                       <td class="py-2 px-3 font-bold text-slate-800">${esc(m.nama_mapel)}</td>
                       <td class="py-2 px-3 text-slate-600">${esc(m.kelompok || 'Wajib')}</td>
                       <td class="py-2 px-3 text-center">
@@ -3888,6 +4032,35 @@
         }
       };
 
+      const wkSelect = document.getElementById('wk-kelas-select');
+      const wkNamaInput = document.getElementById('wk-nama-input');
+      const wkNipInput = document.getElementById('wk-nip-input');
+      const loadWaliFields = (kelasId) => {
+        const ov = state.waliKelasOverride?.[kelasId];
+        if (ov) {
+          wkNamaInput.value = ov.nama || '';
+          wkNipInput.value = ov.nip || '';
+          return;
+        }
+        const klsObj = state.kelasList.find(k => k.id === kelasId);
+        const g = state.guruList.find(item => item.id === klsObj?.wali_kelas_id);
+        wkNamaInput.value = g?.nama_lengkap || '';
+        wkNipInput.value = g?.nip || '';
+      };
+      if (wkSelect && wkNamaInput && wkNipInput) {
+        loadWaliFields(wkSelect.value);
+        wkSelect.onchange = () => loadWaliFields(wkSelect.value);
+        document.getElementById('form-wali-kelas-rapor').onsubmit = (e) => {
+          e.preventDefault();
+          const kelasId = wkSelect.value;
+          const nama = wkNamaInput.value.trim();
+          const nip = wkNipInput.value.trim() || '-';
+          state.waliKelasOverride = { ...(state.waliKelasOverride || {}), [kelasId]: { nama, nip } };
+          localStorage.setItem('erapor_sd_wali_override', JSON.stringify(state.waliKelasOverride));
+          showToast('Nama & NIP Wali Kelas untuk cetak rapor berhasil disimpan!', 'success');
+        };
+      }
+
       document.getElementById('btn-ganti-password-self').onclick = () => {
         openModal('Ganti Password Akun', `
           <form id="form-change-pass" class="space-y-3 text-xs">
@@ -3897,7 +4070,7 @@
             </div>
             <div class="flex justify-end gap-2 pt-2 border-t">
               <button type="button" onclick="document.getElementById('close-modal-btn').click()" class="px-4 py-2 rounded-xl bg-slate-100 font-bold">Batal</button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold">Simpan Password Baru</button>
+              <button type="submit" class="px-5 py-2 rounded-xl bg-red-700 text-white font-bold">Simpan Password Baru</button>
             </div>
           </form>
         `, 'max-w-sm');
@@ -3942,7 +4115,7 @@
             </div>
             <div class="flex justify-end gap-2 pt-2 border-t">
               <button type="button" onclick="document.getElementById('close-modal-btn').click()" class="px-4 py-2 rounded-xl bg-slate-100 font-bold">Batal</button>
-              <button type="submit" class="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold">Simpan Akun Guru</button>
+              <button type="submit" class="px-5 py-2 rounded-xl bg-red-700 text-white font-bold">Simpan Akun Guru</button>
             </div>
           </form>
         `, 'max-w-md');
