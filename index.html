@@ -90,8 +90,122 @@
       .mobile-bottom-nav { display: none !important; }
     }
 
+    /* Animasi Berjalan & Interaktif Aplikasi */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-marquee-track {
+      display: inline-flex;
+      white-space: nowrap;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .marquee-wrapper:hover .animate-marquee-track {
+      animation-play-state: paused;
+    }
+    .animate-float {
+      animation: floatSlow 3.5s ease-in-out infinite;
+    }
+    .animate-page-in {
+      animation: fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .animate-gradient-flow {
+      background-size: 200% 200%;
+      animation: gradientFlow 10s ease infinite;
+    }
+    .bento-hover {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+    .bento-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px -6px rgba(13, 82, 189, 0.22);
+    }
+
+    /* Styles Dokumen Siap Cetak Rapor */
+    .rapor-doc {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #000000;
+      font-size: 9.5pt;
+      line-height: 1.4;
+      background: #ffffff;
+    }
+    .rapor-info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin-bottom: 6px;
+    }
+    .rapor-info-table td {
+      border: none !important;
+      padding: 2px 4px;
+      vertical-align: top;
+    }
+    .rapor-divider {
+      border: none;
+      border-top: 1.5px solid #000000;
+      margin: 4px 0 12px 0;
+    }
+    .rapor-title {
+      text-align: center;
+      font-size: 12.5pt;
+      font-weight: bold;
+      margin: 0 0 12px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .rapor-table {
+      width: 100%;
+      border-collapse: collapse !important;
+      font-size: 9pt;
+      margin-bottom: 12px;
+    }
+    .rapor-table th,
+    .rapor-table td {
+      border: 1px solid #000000 !important;
+      padding: 5px 7px;
+      vertical-align: top;
+    }
+    .rapor-table thead th {
+      background-color: #F1F5F9 !important;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .rapor-table tr {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .rapor-group-row td {
+      font-weight: bold;
+      text-align: left;
+      background-color: #FFFFFF !important;
+      padding: 5px 7px;
+    }
+    .rapor-avoid-break {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
     /* Print Styles untuk Cetak Rapor Resmi & Pelengkap Rapor */
     @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       body, html {
         background: #ffffff !important;
         overflow: visible !important;
@@ -953,14 +1067,14 @@
 
       root.innerHTML = `
         <!-- TOP HEADER BAR -->
-        <header class="bg-gradient-to-r from-blue-900 via-blue-700 to-sky-600 text-white px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-md shrink-0 z-30">
+        <header class="bg-gradient-to-r from-blue-900 via-blue-700 to-sky-600 animate-gradient-flow text-white px-4 sm:px-6 py-2.5 flex items-center justify-between shadow-md shrink-0 z-30">
           <div class="flex items-center gap-3">
-            ${getTutWuriSVG('w-10 h-10 sm:w-11 sm:h-11')}
+            <div class="animate-float">${getTutWuriSVG('w-10 h-10 sm:w-11 sm:h-11')}</div>
             <div>
               <div class="flex items-center gap-2">
                 <span class="font-extrabold text-base sm:text-xl tracking-tight leading-none">e-Rapor SD</span>
                 <span class="hidden sm:inline-flex items-center gap-1 bg-white/15 px-2 py-0.5 rounded-full text-[10px] font-bold border border-white/25">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Cloud Sync
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Cloud Sync
                 </span>
               </div>
               <p class="text-[11px] sm:text-xs text-sky-100 font-medium mt-0.5">Kementerian Pendidikan Dasar dan Menengah</p>
@@ -1006,6 +1120,23 @@
             </button>
           </div>
         </header>
+
+        <!-- RUNNING INFO MARQUEE BAR -->
+        <div class="marquee-wrapper bg-gradient-to-r from-sky-950 via-blue-950 to-indigo-950 text-sky-100 text-[11px] font-medium py-1.5 px-4 overflow-hidden border-b border-blue-800/60 shrink-0 flex items-center gap-3 z-20">
+          <span class="inline-flex items-center gap-1.5 bg-amber-400 text-slate-950 font-extrabold px-2 py-0.5 rounded-full text-[10px] shrink-0 shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-ping"></span>
+            INFO
+          </span>
+          <div class="overflow-hidden flex-1">
+            <div class="animate-marquee-track gap-12">
+              <span>✨ Selamat datang di <strong>e-Rapor SD</strong> — ${esc(sek.nama_sekolah)} (${esc(sek.kabupaten)}) • Semester ${esc(state.selectedSemester)} Tahun Ajaran ${esc(sek.tahun_ajaran)}</span>
+              <span>📌 Pastikan Tujuan Pembelajaran (TP), Nilai Rapor, Kokurikuler, Ekstrakurikuler, dan Absensi sudah lengkap sebelum mencetak Rapor.</span>
+              <span>🖨️ Format Cetak Rapor telah dilengkapi kelompok Mata Pelajaran Wajib &amp; Mata Pelajaran Pilihan sesuai Kurikulum Merdeka.</span>
+              <span>✨ Selamat datang di <strong>e-Rapor SD</strong> — ${esc(sek.nama_sekolah)} (${esc(sek.kabupaten)}) • Semester ${esc(state.selectedSemester)} Tahun Ajaran ${esc(sek.tahun_ajaran)}</span>
+              <span>📌 Pastikan Tujuan Pembelajaran (TP), Nilai Rapor, Kokurikuler, Ekstrakurikuler, dan Absensi sudah lengkap sebelum mencetak Rapor.</span>
+            </div>
+          </div>
+        </div>
 
         <!-- BODY WRAPPER -->
         <div class="flex flex-1 overflow-hidden relative">
@@ -1170,6 +1301,10 @@
       const container = document.getElementById('main-content-container');
       if (!container) return;
 
+      container.classList.remove('animate-page-in');
+      void container.offsetWidth;
+      container.classList.add('animate-page-in');
+
       switch (state.activeMenu) {
         case 'dashboard': renderDashboardPage(container); break;
         case 'data-siswa': renderDataSiswaPage(container); break;
@@ -1230,32 +1365,32 @@
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-              <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl p-4 text-center shadow-sm">
+              <div class="bento-hover bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl p-4 text-center shadow-sm">
                 <i data-lucide="users" class="w-7 h-7 mx-auto mb-1 opacity-90"></i>
                 <div class="text-2xl sm:text-3xl font-extrabold leading-tight">${totalSiswa}</div>
                 <div class="text-xs font-semibold text-blue-100 mt-0.5">Jumlah Siswa</div>
               </div>
-              <div class="bg-gradient-to-br from-rose-500 to-red-600 text-white rounded-2xl p-4 text-center shadow-sm">
+              <div class="bento-hover bg-gradient-to-br from-rose-500 to-red-600 text-white rounded-2xl p-4 text-center shadow-sm">
                 <i data-lucide="calendar" class="w-7 h-7 mx-auto mb-1 opacity-90"></i>
                 <div class="text-2xl sm:text-3xl font-extrabold leading-tight">${totalKelas}</div>
                 <div class="text-xs font-semibold text-rose-100 mt-0.5">Jumlah Kelas</div>
               </div>
-              <div class="bg-gradient-to-br from-emerald-500 to-green-600 text-white rounded-2xl p-4 text-center shadow-sm">
+              <div class="bento-hover bg-gradient-to-br from-emerald-500 to-green-600 text-white rounded-2xl p-4 text-center shadow-sm">
                 <i data-lucide="book-open" class="w-7 h-7 mx-auto mb-1 opacity-90"></i>
                 <div class="text-2xl sm:text-3xl font-extrabold leading-tight">${totalMapel}</div>
                 <div class="text-xs font-semibold text-emerald-100 mt-0.5">Jumlah Mapel</div>
               </div>
-              <div class="bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-2xl p-4 text-center shadow-sm">
+              <div class="bento-hover bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-2xl p-4 text-center shadow-sm">
                 <i data-lucide="file-text" class="w-7 h-7 mx-auto mb-1 opacity-90"></i>
                 <div class="text-2xl sm:text-3xl font-extrabold leading-tight">${totalTP}</div>
                 <div class="text-xs font-semibold text-blue-200 mt-0.5">Jumlah TP</div>
               </div>
-              <div class="bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-2xl p-4 text-center shadow-sm">
+              <div class="bento-hover bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-2xl p-4 text-center shadow-sm">
                 <i data-lucide="check-circle-2" class="w-7 h-7 mx-auto mb-1 opacity-90"></i>
                 <div class="text-2xl sm:text-3xl font-extrabold leading-tight">${pctTercapai}%</div>
                 <div class="text-xs font-semibold text-amber-100 mt-0.5">TP Tercapai</div>
               </div>
-              <div class="bg-gradient-to-br from-cyan-500 to-teal-600 text-white rounded-2xl p-4 text-center shadow-sm">
+              <div class="bento-hover bg-gradient-to-br from-cyan-500 to-teal-600 text-white rounded-2xl p-4 text-center shadow-sm">
                 <i data-lucide="alert-circle" class="w-7 h-7 mx-auto mb-1 opacity-90"></i>
                 <div class="text-2xl sm:text-3xl font-extrabold leading-tight">${pctPendampingan}%</div>
                 <div class="text-xs font-semibold text-cyan-100 mt-0.5">Perlu Pendampingan</div>
@@ -3309,129 +3444,197 @@
           status_kenaikan: ''
         };
 
-        return `
-          <div class="${pageBreakClass}" style="padding: ${pc.marginAtas}mm ${pc.marginKanan}mm ${pc.marginBawah}mm ${pc.marginKiri}mm; font-family: Arial, sans-serif; color: #000; font-size: 9.5pt;">
-            <h2 style="text-align: center; font-size: 13pt; font-weight: bold; margin: 0 0 12px 0; text-transform: uppercase;">LAPORAN HASIL BELAJAR (RAPOR)</h2>
+        const sortedMapel = [...state.mapelList].sort((a, b) => (a.urutan || 99) - (b.urutan || 99));
+        const wajibMapel = sortedMapel.filter(m => !m.kelompok || m.kelompok === 'Wajib');
+        const pilihanMapel = sortedMapel.filter(m => m.kelompok === 'Pilihan' || m.kelompok === 'Muatan Lokal');
 
-            <table style="width: 100%; font-size: 9.5pt; margin-bottom: 10px;">
+        const renderMapelRows = (list) => list.map((m, i) => {
+          const nr = state.nilaiRaporList.find(n => n.siswa_id === s.id && n.mapel_id === m.id && String(n.semester) === String(state.selectedSemester));
+          const tinggi = (nr?.deskripsi_tertinggi || '').trim();
+          const rendah = (nr?.deskripsi_terendah || '').trim();
+          let capaianHtml = '-';
+          if (tinggi && rendah) {
+            capaianHtml = `<div>${esc(tinggi)}</div><div style="margin-top: 2px;">${esc(rendah)}</div>`;
+          } else if (tinggi || rendah) {
+            capaianHtml = esc(tinggi || rendah);
+          }
+          return `
+            <tr>
+              <td style="text-align: center; vertical-align: middle;">${i + 1}</td>
+              <td style="vertical-align: middle;">${esc(m.nama_mapel)}</td>
+              <td style="text-align: center; vertical-align: middle; font-weight: bold;">${nr?.nilai_akhir ?? '-'}</td>
+              <td style="line-height: 1.38;">${capaianHtml}</td>
+            </tr>
+          `;
+        }).join('');
+
+        return `
+          <div class="rapor-doc ${pageBreakClass}" style="padding: ${pc.marginAtas}mm ${pc.marginKanan}mm ${pc.marginBawah}mm ${pc.marginKiri}mm;">
+            <!-- IDENTITAS PESERTA DIDIK & SEKOLAH -->
+            <table class="rapor-info-table">
               <tr>
-                <td style="width: 18%;">Nama Peserta Didik</td><td style="width: 2%;">:</td><td style="width: 38%;"><strong>${esc(s.nama_siswa)}</strong></td>
-                <td style="width: 18%;">Kelas / Fase</td><td style="width: 2%;">:</td><td>${esc(kls?.nama_kelas || '-')} / Fase ${esc(kls?.fase || '-')}</td>
+                <td style="width: 17%;">Nama Murid</td><td style="width: 2%;">:</td><td style="width: 39%;"><strong>${esc(s.nama_siswa)}</strong></td>
+                <td style="width: 17%;">Kelas</td><td style="width: 2%;">:</td><td>${esc(kls?.nama_kelas || '-')}</td>
               </tr>
               <tr>
-                <td>NIS / NISN</td><td>:</td><td>${esc(s.nis)} / ${esc(s.nisn)}</td>
+                <td>NIS/NISN</td><td>:</td><td>${esc(s.nis)} / ${esc(s.nisn)}</td>
+                <td>Fase</td><td>:</td><td>${esc(kls?.fase || '-')}</td>
+              </tr>
+              <tr>
+                <td>Sekolah</td><td>:</td><td>${esc(sek.nama_sekolah)}</td>
                 <td>Semester</td><td>:</td><td>${state.selectedSemester === '1' ? '1 (Ganjil)' : '2 (Genap)'}</td>
               </tr>
               <tr>
-                <td>Nama Sekolah</td><td>:</td><td>${esc(sek.nama_sekolah)}</td>
-                <td>Tahun Pelajaran</td><td>:</td><td>${esc(sek.tahun_ajaran)}</td>
-              </tr>
-              <tr>
-                <td>Alamat Sekolah</td><td>:</td><td colspan="4">${esc(sek.alamat)}, ${esc(sek.kabupaten)}</td>
+                <td>Alamat</td><td>:</td><td>${esc(sek.alamat)}${sek.kabupaten ? ', ' + esc(sek.kabupaten) : ''}</td>
+                <td>Tahun Ajaran</td><td>:</td><td>${esc(sek.tahun_ajaran)}</td>
               </tr>
             </table>
+            <hr class="rapor-divider" />
 
-            <!-- A. SIKAP / KARAKTER PROFIL PELAJAR PANCASILA -->
-            <div style="font-weight: bold; margin: 10px 0 4px 0;">A. SIKAP / PROFIL PELAJAR PANCASILA</div>
-            <table style="width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 12px;">
+            <h2 class="rapor-title">LAPORAN HASIL BELAJAR</h2>
+
+            <!-- TABEL CAPAIAN KOMPETENSI MATA PELAJARAN -->
+            <table class="rapor-table">
               <thead>
-                <tr style="background: #E2E8F0;">
-                  <th style="border: 1px solid #000; padding: 5px; width: 32%; text-align: left;">Dimensi</th>
-                  <th style="border: 1px solid #000; padding: 5px; text-align: left;">Deskripsi Capaian</th>
+                <tr>
+                  <th style="width: 5%;">No</th>
+                  <th style="width: 26%;">Mata Pelajaran</th>
+                  <th style="width: 11%;">Nilai Akhir</th>
+                  <th>Capaian Kompetensi</th>
                 </tr>
               </thead>
               <tbody>
-                ${p3Records.map(p => `
+                <tr class="rapor-group-row">
+                  <td colspan="4">Mata Pelajaran Wajib</td>
+                </tr>
+                ${wajibMapel.length > 0 ? renderMapelRows(wajibMapel) : `
                   <tr>
-                    <td style="border: 1px solid #000; padding: 5px; font-weight: bold; vertical-align: top;">${esc(p.dimensi)}</td>
-                    <td style="border: 1px solid #000; padding: 5px; vertical-align: top;">${esc(p.deskripsi)}</td>
+                    <td style="text-align: center;">-</td>
+                    <td colspan="3" style="text-align: center;">Belum ada data mata pelajaran wajib</td>
                   </tr>
-                `).join('')}
+                `}
+                <tr class="rapor-group-row">
+                  <td colspan="4">Mata Pelajaran Pilihan</td>
+                </tr>
+                ${pilihanMapel.length > 0 ? renderMapelRows(pilihanMapel) : `
+                  <tr>
+                    <td style="text-align: center;">-</td>
+                    <td style="color: #475569;">-</td>
+                    <td style="text-align: center;">-</td>
+                    <td style="color: #475569;">Belum ada mata pelajaran pilihan</td>
+                  </tr>
+                `}
               </tbody>
             </table>
 
-            <!-- B. PENGETAHUAN & KETERAMPILAN (MATA PELAJARAN) -->
-            <div style="font-weight: bold; margin: 10px 0 4px 0;">B. CAPAIAN KOMPETENSI MATA PELAJARAN</div>
-            <table style="width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 12px;">
+            <!-- KOKURIKULER (PROFIL PELAJAR PANCASILA) -->
+            <table class="rapor-table rapor-avoid-break">
               <thead>
-                <tr style="background: #E2E8F0;">
-                  <th style="border: 1px solid #000; padding: 5px; width: 5%; text-align: center;">No</th>
-                  <th style="border: 1px solid #000; padding: 5px; width: 28%; text-align: left;">Mata Pelajaran</th>
-                  <th style="border: 1px solid #000; padding: 5px; width: 10%; text-align: center;">Nilai Akhir</th>
-                  <th style="border: 1px solid #000; padding: 5px; text-align: left;">Capaian Kompetensi</th>
+                <tr>
+                  <th>Kokurikuler</th>
                 </tr>
               </thead>
               <tbody>
-                ${state.mapelList.map((m, i) => {
-                  const nr = state.nilaiRaporList.find(n => n.siswa_id === s.id && n.mapel_id === m.id && String(n.semester) === String(state.selectedSemester));
-                  const descGabungan = nr
-                    ? `${nr.deskripsi_tertinggi || ''} ${nr.deskripsi_terendah || ''}`.trim()
-                    : '-';
-                  return `
-                    <tr>
-                      <td style="border: 1px solid #000; padding: 5px; text-align: center; vertical-align: top;">${i + 1}</td>
-                      <td style="border: 1px solid #000; padding: 5px; font-weight: bold; vertical-align: top;">${esc(m.nama_mapel)}</td>
-                      <td style="border: 1px solid #000; padding: 5px; text-align: center; font-weight: bold; vertical-align: top;">${nr?.nilai_akhir ?? '-'}</td>
-                      <td style="border: 1px solid #000; padding: 5px; vertical-align: top; line-height: 1.35;">${esc(descGabungan)}</td>
-                    </tr>
-                  `;
-                }).join('')}
+                <tr>
+                  <td style="padding: 8px 10px; line-height: 1.45;">
+                    ${p3Records.map(p => `
+                      <div style="margin-bottom: 3px;"><strong>${esc(p.dimensi)}:</strong> ${esc(p.deskripsi)}</div>
+                    `).join('')}
+                  </td>
+                </tr>
               </tbody>
             </table>
 
-            <!-- C. EKSTRAKURIKULER -->
-            <div style="font-weight: bold; margin: 10px 0 4px 0;">C. KEGIATAN EKSTRAKURIKULER</div>
-            <table style="width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 12px;">
+            <!-- EKSTRAKURIKULER -->
+            <table class="rapor-table rapor-avoid-break">
               <thead>
-                <tr style="background: #E2E8F0;">
-                  <th style="border: 1px solid #000; padding: 5px; width: 5%;">No</th>
-                  <th style="border: 1px solid #000; padding: 5px; width: 30%; text-align: left;">Kegiatan Ekstrakurikuler</th>
-                  <th style="border: 1px solid #000; padding: 5px; width: 15%;">Predikat</th>
-                  <th style="border: 1px solid #000; padding: 5px; text-align: left;">Keterangan</th>
+                <tr>
+                  <th style="width: 6%;">No</th>
+                  <th style="width: 30%;">Ekstrakurikuler</th>
+                  <th>Keterangan</th>
                 </tr>
               </thead>
               <tbody>
                 ${ekskulRecords.length === 0 ? `
-                  <tr><td colspan="4" style="border: 1px solid #000; padding: 5px; text-align: center;">-</td></tr>
+                  <tr>
+                    <td style="text-align: center;">-</td>
+                    <td style="text-align: center;">-</td>
+                    <td style="text-align: center;">-</td>
+                  </tr>
                 ` : ekskulRecords.map((ek, i) => `
                   <tr>
-                    <td style="border: 1px solid #000; padding: 5px; text-align: center;">${i + 1}</td>
-                    <td style="border: 1px solid #000; padding: 5px; font-weight: bold;">${esc(ek.nama_ekskul)}</td>
-                    <td style="border: 1px solid #000; padding: 5px; text-align: center;">${esc(ek.predikat)}</td>
-                    <td style="border: 1px solid #000; padding: 5px;">${esc(ek.deskripsi)}</td>
+                    <td style="text-align: center;">${i + 1}</td>
+                    <td>${esc(ek.nama_ekskul)}</td>
+                    <td>${ek.predikat ? `<strong>[${esc(ek.predikat)}]</strong> ` : ''}${esc(ek.deskripsi)}</td>
                   </tr>
                 `).join('')}
               </tbody>
             </table>
 
-            <!-- D. KETIDAKHADIRAN & CATATAN WALI KELAS -->
-            <div style="display: flex; gap: 16px; margin-bottom: 12px;">
-              <table style="width: 40%; border-collapse: collapse; font-size: 9pt;">
-                <thead><tr style="background: #E2E8F0;"><th colspan="2" style="border: 1px solid #000; padding: 4px;">Ketidakhadiran</th></tr></thead>
+            <!-- KETIDAKHADIRAN & CATATAN WALI KELAS -->
+            <div class="rapor-avoid-break" style="display: flex; gap: 14px; align-items: stretch; margin-bottom: 12px;">
+              <table class="rapor-table" style="width: 36%; margin-bottom: 0;">
+                <thead>
+                  <tr>
+                    <th colspan="2">Ketidakhadiran</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td style="border: 1px solid #000; padding: 4px;">Sakit</td><td style="border: 1px solid #000; padding: 4px; text-align: center;">${dw.sakit} hari</td></tr>
-                  <tr><td style="border: 1px solid #000; padding: 4px;">Izin</td><td style="border: 1px solid #000; padding: 4px; text-align: center;">${dw.izin} hari</td></tr>
-                  <tr><td style="border: 1px solid #000; padding: 4px;">Tanpa Keterangan</td><td style="border: 1px solid #000; padding: 4px; text-align: center;">${dw.tanpa_keterangan} hari</td></tr>
+                  <tr>
+                    <td style="width: 58%;">Sakit</td>
+                    <td>: &nbsp; ${dw.sakit} &nbsp; hari</td>
+                  </tr>
+                  <tr>
+                    <td>Izin</td>
+                    <td>: &nbsp; ${dw.izin} &nbsp; hari</td>
+                  </tr>
+                  <tr>
+                    <td>Tanpa Keterangan</td>
+                    <td>: &nbsp; ${dw.tanpa_keterangan} &nbsp; hari</td>
+                  </tr>
                 </tbody>
               </table>
-              <div style="width: 60%; border: 1px solid #000; padding: 6px; font-size: 9pt;">
-                <strong>Catatan Wali Kelas:</strong><br/>
-                <p style="margin: 4px 0 0 0;">${esc(dw.catatan_walas)}</p>
-              </div>
+
+              <table class="rapor-table" style="width: 64%; margin-bottom: 0;">
+                <thead>
+                  <tr>
+                    <th>Catatan Wali Kelas</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding: 8px 10px; line-height: 1.45;">${esc(dw.catatan_walas)}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
             ${state.selectedSemester === '2' ? `
-              <div style="border: 1.5px solid #000; padding: 6px 10px; font-size: 9.5pt; margin-bottom: 12px;">
+              <div class="rapor-avoid-break" style="border: 1px solid #000; padding: 7px 10px; font-size: 9.5pt; margin-bottom: 12px;">
                 <strong>Keputusan:</strong> Berdasarkan pencapaian seluruh kompetensi, peserta didik dinyatakan: <strong>${esc(dw.status_kenaikan || 'Naik Kelas')}</strong>
               </div>
             ` : ''}
 
             ${pc.tandaTangan ? `
-              <table style="width: 100%; margin-top: 18px; font-size: 9.5pt; text-align: center;">
+              <table class="rapor-avoid-break" style="width: 100%; margin-top: 18px; font-size: 9.5pt; text-align: center; border-collapse: collapse;">
                 <tr>
-                  <td style="width: 33%;">Mengetahui,<br/>Orang Tua / Wali,<br/><div style="height: 48px;"></div>( ........................................ )</td>
-                  <td style="width: 34%;">Mengetahui,<br/>Kepala Sekolah,<br/><div style="height: 48px;"></div><strong><u>${esc(sek.kepala_sekolah)}</u></strong><br/>NIP. ${esc(sek.nip_kepsek)}</td>
-                  <td style="width: 33%;">${esc(sek.kabupaten)}, ${esc(sek.tanggal_rapor)}<br/>Wali Kelas,<br/><div style="height: 48px;"></div><strong><u>${esc(waliGuru?.nama_lengkap || waliGuru?.nama || '')}</u></strong><br/>NIP. ${esc(waliGuru?.nip || '-')}</td>
+                  <td style="width: 33%; border: none; vertical-align: top;">
+                    Mengetahui,<br/>Orang Tua / Wali,<br/>
+                    <div style="height: 52px;"></div>
+                    ( ........................................ )
+                  </td>
+                  <td style="width: 34%; border: none; vertical-align: top;">
+                    Mengetahui,<br/>Kepala Sekolah,<br/>
+                    <div style="height: 52px;"></div>
+                    <strong><u>${esc(sek.kepala_sekolah)}</u></strong><br/>
+                    NIP. ${esc(sek.nip_kepsek)}
+                  </td>
+                  <td style="width: 33%; border: none; vertical-align: top;">
+                    ${esc(sek.kabupaten)}, ${esc(sek.tanggal_rapor)}<br/>Wali Kelas,<br/>
+                    <div style="height: 52px;"></div>
+                    <strong><u>${esc(waliGuru?.nama_lengkap || waliGuru?.nama || '')}</u></strong><br/>
+                    NIP. ${esc(waliGuru?.nip || '-')}
+                  </td>
                 </tr>
               </table>
             ` : ''}
